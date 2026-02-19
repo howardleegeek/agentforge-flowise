@@ -1,3 +1,4 @@
+# AgentForge one-click deployment docker-compose
 version: '3.1'
 
 services:
