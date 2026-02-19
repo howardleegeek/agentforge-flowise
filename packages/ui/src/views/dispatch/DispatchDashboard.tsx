@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
 // Auto-refresh is performed every 10 seconds.
 import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } from '@mui/material'
@@ -28,12 +28,18 @@ const DispatchDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [lastUpdated, setLastUpdated] = useState<string | null>(null)
+    // Abort controller to cancel in-flight fetches on unmount
+    const abortCtrl = useRef<AbortController | null>(null)
 
     const fetchData = async () => {
+        // cancel any in-flight requests from a previous interval
+        abortCtrl.current?.abort()
+        abortCtrl.current = new AbortController()
+        const signal = abortCtrl.current.signal
         try {
             setError(null)
             // Nodes
-            const nodesResp = await fetch('/api/v1/dispatch/nodes')
+            const nodesResp = await fetch('/api/v1/dispatch/nodes', { signal })
             if (nodesResp.ok) {
                 const data = await nodesResp.json()
                 // Normalize to NodeInfo[]; tolerate different shapes
@@ -49,7 +55,7 @@ const DispatchDashboard: React.FC = () => {
             }
 
             // Tasks summary
-            const tasksResp = await fetch('/api/v1/dispatch/tasks')
+            const tasksResp = await fetch('/api/v1/dispatch/tasks', { signal })
             if (tasksResp.ok) {
                 const data = await tasksResp.json()
                 // Expecting { pending, running, completed }
@@ -70,7 +76,10 @@ const DispatchDashboard: React.FC = () => {
     useEffect(() => {
         fetchData()
         const t = setInterval(fetchData, 10000)
-        return () => clearInterval(t)
+        return () => {
+            clearInterval(t)
+            abortCtrl.current?.abort()
+        }
     }, [])
 
     const totalSlots = (n: NodeInfo) => n.slotsTotal ?? 0
