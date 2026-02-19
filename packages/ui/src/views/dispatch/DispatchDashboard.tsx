@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
+// This file is wired into the existing UI:
+// - Sidebar: /dispatch entry points to this view
+// - Route: /dispatch loads this dashboard via the Dispatch page wrapper
 // Auto-refresh is performed every 10 seconds.
 import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } from '@mui/material'
 
