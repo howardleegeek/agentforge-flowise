@@ -1,8 +1,13 @@
 {
-    "name": "flowise",
+    "name": "@oyster/agentforge",
     "version": "3.0.13",
     "private": true,
-    "homepage": "https://flowiseai.com",
+    "homepage": "https://agentforge.io",
+    "description": "AgentForge - Flowise brand modernization (white-label).",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/oyster/agentforge"
+    },
     "workspaces": [
         "packages/*",
         "flowise",

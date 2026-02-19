@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-    flowise:
-        image: flowiseai/flowise:latest
+    agentforge:
+        image: agentforge/agentforge:latest
         restart: always
         environment:
             - PORT=${PORT}
@@ -143,4 +143,4 @@ services:
             start_period: 30s
         volumes:
             - ~/.flowise:/root/.flowise
-        entrypoint: /bin/sh -c "sleep 3; flowise start"
+        entrypoint: /bin/sh -c "sleep 3; agentforge start"

@@ -1,19 +1,19 @@
 <!-- markdownlint-disable MD030 -->
 
-# Flowise UI
+# AgentForge UI
 
 English | [中文](./README-ZH.md)
 
-React frontend ui for Flowise.
+React frontend UI for AgentForge.
 
-![Flowise](https://github.com/FlowiseAI/Flowise/blob/main/images/flowise_agentflow.gif?raw=true)
+![AgentForge](https://github.com/oyster/agentforge/blob/main/images/agentforge_agentflow.gif?raw=true)
 
 Install:
 
 ```bash
-npm i flowise-ui
+npm i agentforge-ui
 ```
 
 ## License
 
-Source code in this repository is made available under the [Apache License Version 2.0](https://github.com/FlowiseAI/Flowise/blob/master/LICENSE.md).
+Source code in this repository is made available under the Apache License Version 2.0. Based on Flowise
