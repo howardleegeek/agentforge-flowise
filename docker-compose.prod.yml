@@ -1,14 +1,52 @@
-version: '3.1'
+# Production override for AgentForge deployment
+version: '3.8'
 
 services:
     agentforge:
         image: agentforge
-        restart: always
         environment:
             - PORT=${PORT:-3000}
             - DISPATCH_ENABLED=${DISPATCH_ENABLED:-true}
             - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-https://controller.example.com}
-            - APP_ENV=production
+            - DATABASE_PATH=${DATABASE_PATH}
+            - DATABASE_TYPE=${DATABASE_TYPE}
+            - DATABASE_PORT=${DATABASE_PORT}
+            - DATABASE_HOST=${DATABASE_HOST}
+            - DATABASE_NAME=${DATABASE_NAME}
+            - DATABASE_USER=${DATABASE_USER}
+            - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+            - DATABASE_SSL=${DATABASE_SSL}
+            - DATABASE_SSL_KEY_BASE64=${DATABASE_SSL_KEY_BASE64}
+            - SECRETKEY_STORAGE_TYPE=${SECRETKEY_STORAGE_TYPE}
+            - SECRETKEY_PATH=${SECRETKEY_PATH}
+            - FLOWISE_SECRETKEY_OVERWRITE=${FLOWISE_SECRETKEY_OVERWRITE}
+            - SECRETKEY_AWS_ACCESS_KEY=${SECRETKEY_AWS_ACCESS_KEY}
+            - SECRETKEY_AWS_SECRET_KEY=${SECRETKEY_AWS_SECRET_KEY}
+            - SECRETKEY_AWS_REGION=${SECRETKEY_AWS_REGION}
+            - SECRETKEY_AWS_NAME=${SECRETKEY_AWS_NAME}
+            - DEBUG=${DEBUG}
+            - LOG_PATH=${LOG_PATH}
+            - LOG_LEVEL=${LOG_LEVEL}
+            - STORAGE_TYPE=${STORAGE_TYPE}
+            - BLOB_STORAGE_PATH=${BLOB_STORAGE_PATH}
+            - S3_STORAGE_BUCKET_NAME=${S3_STORAGE_BUCKET_NAME}
+            - S3_STORAGE_ACCESS_KEY_ID=${S3_STORAGE_ACCESS_KEY_ID}
+            - S3_STORAGE_SECRET_ACCESS_KEY=${S3_STORAGE_SECRET_ACCESS_KEY}
+            - S3_STORAGE_REGION=${S3_STORAGE_REGION}
+            - S3_ENDPOINT_URL=${S3_ENDPOINT_URL}
+            - APP_URL=${APP_URL}
+            - JWT_AUTH_TOKEN_SECRET=${JWT_AUTH_TOKEN_SECRET}
+            - JWT_REFRESH_TOKEN_SECRET=${JWT_REFRESH_TOKEN_SECRET}
+            - JWT_ISSUER=${JWT_ISSUER}
+            - JWT_AUDIENCE=${JWT_AUDIENCE}
+            - JWT_TOKEN_EXPIRY_IN_MINUTES=${JWT_TOKEN_EXPIRY_IN_MINUTES}
+            - JWT_REFRESH_TOKEN_EXPIRY_IN_MINUTES=${JWT_REFRESH_TOKEN_EXPIRY_IN_MINUTES}
+            - MODE=${MODE}
+            - QUEUE_NAME=${QUEUE_NAME}
+            - REDIS_URL=${REDIS_URL}
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=${REDIS_PORT}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
         ports:
             - '${PORT:-3000}:${PORT:-3000}'
         healthcheck:
@@ -17,3 +55,5 @@ services:
             timeout: 5s
             retries: 5
             start_period: 30s
+        volumes:
+            - ~/.agentforge:/root/.agentforge
