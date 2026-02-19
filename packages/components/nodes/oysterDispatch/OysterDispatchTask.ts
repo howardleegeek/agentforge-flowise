@@ -1,67 +1,92 @@
-import { ICommonObject, INode, INodeData, INodeParams, INodeOutputsValue } from '../../../src/Interface'
+import { ICommonObject, INode, INodeData, INodeParams } from '../../../src/Interface'
 import { getBaseClasses } from '../../../src/utils'
 
+// Oyster Dispatch Task Node
+// Wraps a subworkflow as a dispatched task
 class OysterDispatchTask implements INode {
     label: string
     name: string
     version: number
-    description: string
     type: string
     icon: string
     category: string
+    description: string
     baseClasses: string[]
     inputs: INodeParams[]
-    outputs: INodeOutputsValue[]
+    outputs: any[]
 
     constructor() {
         this.label = 'Oyster Dispatch Task'
-        this.name = 'oysterDispatchTask'
+        this.name = 'oysterDispatch'
         this.version = 1.0
         this.type = 'OysterDispatchTask'
         this.icon = 'oysterDispatchTask.svg'
         this.category = 'Oyster'
-        this.description = 'Wraps a sub-workflow as a dispatch task'
-        this.baseClasses = [...getBaseClasses(OysterDispatchTask)]
+        this.description = 'Dispatch a single subworkflow as a task'
+        this.baseClasses = getBaseClasses(OysterDispatchTask)
         this.inputs = [
             {
                 label: 'Project',
                 name: 'project',
                 type: 'string',
-                placeholder: 'my-project'
+                default: ''
             },
             {
                 label: 'Priority',
                 name: 'priority',
-                type: 'number',
-                optional: true
+                type: 'string',
+                default: 'normal'
             },
             {
                 label: 'Estimated Minutes',
-                name: 'estimatedMinutes',
+                name: 'estimated_minutes',
                 type: 'number',
-                optional: true
+                step: 1,
+                default: 60
             },
             {
                 label: 'Node Preference',
-                name: 'nodePreference',
+                name: 'node_preference',
                 type: 'string',
                 optional: true
             }
         ]
         this.outputs = [
-            { label: 'Task ID', name: 'taskId', baseClasses: this.baseClasses },
-            { label: 'Status', name: 'status', baseClasses: this.baseClasses },
-            { label: 'Result', name: 'result', baseClasses: ['string', 'json'] }
+            {
+                label: 'Task ID',
+                name: 'task_id',
+                baseClasses: [...this.baseClasses, 'text']
+            },
+            {
+                label: 'Status',
+                name: 'status',
+                baseClasses: [...this.baseClasses, 'text']
+            },
+            {
+                label: 'Result',
+                name: 'result',
+                baseClasses: [...this.baseClasses, 'json']
+            }
         ]
     }
 
-    async init(nodeData: INodeData, _: string, __: ICommonObject): Promise<any> {
-        const project = nodeData?.inputs?.project as string
-        if (!project) {
-            throw new Error('Project is required')
+    async init(nodeData: INodeData, _path: string, _options: ICommonObject): Promise<any> {
+        // Lightweight stub: simulate creating a task and returning initial status
+        const project = (nodeData.inputs?.project ?? '') as string
+        const priority = (nodeData.inputs?.priority ?? 'normal') as string
+        const estimatedMinutes = (nodeData.inputs?.estimated_minutes ?? 60) as number
+        const nodePref = (nodeData.inputs?.node_preference ?? '') as string
+
+        const taskId = `task_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+        const status = 'queued'
+        const result = {
+            project,
+            priority,
+            estimated_minutes: estimatedMinutes,
+            node_preference: nodePref
         }
-        const taskId = 'task_' + Math.random().toString(36).slice(2, 9)
-        return { taskId, status: 'created', result: {} }
+
+        return { task_id: taskId, status, result }
     }
 }
 
