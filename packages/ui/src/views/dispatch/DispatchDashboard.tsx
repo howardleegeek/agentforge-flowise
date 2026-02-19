@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+// Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
+// Auto-refresh is performed every 10 seconds.
 import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } from '@mui/material'
 
 type NodeInfo = {
