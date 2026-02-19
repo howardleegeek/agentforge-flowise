@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express'
-import DispatchBridge from '../../services/dispatch-bridge'
+import { DispatchBridge } from '../../services/dispatch-bridge'
 
 const router = express.Router()
-const bridge = new DispatchBridge()
+
+// Ensure JSON body parsing for these routes
+router.use(express.json())
 
 // POST /api/v1/dispatch/submit — 提交 workflow 到 dispatch
 interface SubmitPayload {
@@ -13,17 +15,17 @@ interface SubmitPayload {
 router.post('/submit', async (req: Request, res: Response) => {
     const { chatflowId, input, flowName } = (req.body as SubmitPayload) || {}
     try {
-        if (!bridge.isEnabled()) {
+        if (!DispatchBridge.isEnabled()) {
             return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
         }
         if (!chatflowId) {
             return res.status(400).json({ error: 'chatflowId is required' })
         }
-        const result = await bridge.submit(chatflowId, input, flowName)
+        const result = await DispatchBridge.submitTask(chatflowId, input)
         if (!result) {
             return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
         }
-        res.json({ taskId: result.taskId, dispatched: true })
+        res.json({ taskId: result, dispatched: true })
     } catch (err: any) {
         res.status(500).json({ error: err?.message ?? 'dispatch submission error' })
     }
@@ -34,10 +36,10 @@ router.get('/status/:taskId', async (req: Request, res: Response) => {
     const { taskId } = req.params
     try {
         // If dispatch bridge is disabled, skip and return a clear indicator
-        if (!bridge.isEnabled()) {
+        if (!DispatchBridge.isEnabled()) {
             return res.json({ skipped: true, reason: 'DISPATCH_DISABLED' })
         }
-        const status = await bridge.status(taskId)
+        const status = await DispatchBridge.getStatus(taskId)
         res.json(status)
     } catch (err: any) {
         res.status(500).json({ error: err?.message ?? 'status retrieval error' })
@@ -59,11 +61,11 @@ router.post('/callback', (req: Request, res: Response) => {
 router.get('/nodes', async (_req: Request, res: Response) => {
     try {
         // If dispatch bridge is disabled, skip and return a clear indicator
-        if (!bridge.isEnabled()) {
+        if (!DispatchBridge.isEnabled()) {
             return res.json({ skipped: true, reason: 'DISPATCH_DISABLED', nodes: [] })
         }
-        const nodes = await bridge.nodes()
-        res.json(nodes)
+        const nodes = await DispatchBridge.getNodes()
+        res.json({ nodes })
     } catch (err: any) {
         res.status(500).json({ error: err?.message ?? 'nodes retrieval error' })
     }
