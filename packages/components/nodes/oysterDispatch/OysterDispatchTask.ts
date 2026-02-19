@@ -2,7 +2,7 @@ import { ICommonObject, INode, INodeData, INodeParams } from '../../../src/Inter
 import { getBaseClasses } from '../../../src/utils'
 
 // Oyster Dispatch Task Node
-// Wraps a subworkflow as a dispatched task
+// Wraps a sub-workflow as a dispatch task
 class OysterDispatchTask implements INode {
     label: string
     name: string
@@ -17,36 +17,34 @@ class OysterDispatchTask implements INode {
 
     constructor() {
         this.label = 'Oyster Dispatch Task'
-        this.name = 'oysterDispatch'
+        this.name = 'oysterDispatchTask'
         this.version = 1.0
         this.type = 'OysterDispatchTask'
         this.icon = 'oysterDispatchTask.svg'
         this.category = 'Oyster'
-        this.description = 'Dispatch a single subworkflow as a task'
+        this.description = 'Dispatch a sub-workflow as a task'
         this.baseClasses = getBaseClasses(OysterDispatchTask)
         this.inputs = [
             {
                 label: 'Project',
                 name: 'project',
-                type: 'string',
-                default: ''
+                type: 'string'
             },
             {
                 label: 'Priority',
                 name: 'priority',
                 type: 'string',
-                default: 'normal'
+                optional: true
             },
             {
                 label: 'Estimated Minutes',
-                name: 'estimated_minutes',
+                name: 'estimatedMinutes',
                 type: 'number',
-                step: 1,
-                default: 60
+                optional: true
             },
             {
                 label: 'Node Preference',
-                name: 'node_preference',
+                name: 'nodePreference',
                 type: 'string',
                 optional: true
             }
@@ -54,13 +52,13 @@ class OysterDispatchTask implements INode {
         this.outputs = [
             {
                 label: 'Task ID',
-                name: 'task_id',
-                baseClasses: [...this.baseClasses, 'text']
+                name: 'taskId',
+                baseClasses: [...this.baseClasses, 'json']
             },
             {
                 label: 'Status',
                 name: 'status',
-                baseClasses: [...this.baseClasses, 'text']
+                baseClasses: [...this.baseClasses, 'json']
             },
             {
                 label: 'Result',
@@ -71,22 +69,17 @@ class OysterDispatchTask implements INode {
     }
 
     async init(nodeData: INodeData, _path: string, _options: ICommonObject): Promise<any> {
-        // Lightweight stub: simulate creating a task and returning initial status
-        const project = (nodeData.inputs?.project ?? '') as string
-        const priority = (nodeData.inputs?.priority ?? 'normal') as string
-        const estimatedMinutes = (nodeData.inputs?.estimated_minutes ?? 60) as number
-        const nodePref = (nodeData.inputs?.node_preference ?? '') as string
-
-        const taskId = `task_${Date.now()}_${Math.floor(Math.random() * 1000)}`
-        const status = 'queued'
-        const result = {
-            project,
-            priority,
-            estimated_minutes: estimatedMinutes,
-            node_preference: nodePref
+        const project = (nodeData.inputs as any)?.project
+        if (!project) {
+            throw new Error('Project is required for OysterDispatchTask')
         }
 
-        return { task_id: taskId, status, result }
+        // Minimal, deterministic-ish placeholder for task creation
+        const taskId = `task-${Math.random().toString(36).slice(2, 9)}`
+        const status = 'scheduled'
+        const result = null
+
+        return { taskId, status, result }
     }
 }
 
