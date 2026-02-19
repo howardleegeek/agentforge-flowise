@@ -160,7 +160,8 @@ const DispatchDashboard: React.FC = () => {
                     <Card>
                         <CardHeader title='Pending' />
                         <CardContent>
-                            <Typography variant='h6'>{tasks.pending ?? 0}</Typography>
+                            {/* Display label with value to satisfy existing tests and improve readability */}
+                            <Typography variant='h6'>Pending: {tasks.pending ?? 0}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -168,7 +169,7 @@ const DispatchDashboard: React.FC = () => {
                     <Card>
                         <CardHeader title='Running' />
                         <CardContent>
-                            <Typography variant='h6'>{tasks.running ?? 0}</Typography>
+                            <Typography variant='h6'>Running: {tasks.running ?? 0}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -176,7 +177,7 @@ const DispatchDashboard: React.FC = () => {
                     <Card>
                         <CardHeader title='Completed' />
                         <CardContent>
-                            <Typography variant='h6'>{tasks.completed ?? 0}</Typography>
+                            <Typography variant='h6'>Completed: {tasks.completed ?? 0}</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
