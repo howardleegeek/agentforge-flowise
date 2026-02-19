@@ -1,3 +1,6 @@
+// AF04: Dispatch control panel - pre-implemented UI with auto-refresh
+// Note: This component renders DispatchDashboard which displays cluster nodes,
+// slots usage, and task queue by consuming /api/v1/dispatch/* endpoints.
 import React, { useEffect, useState, useMemo } from 'react'
 import { Box, Grid, Card, CardContent, Typography, LinearProgress, Skeleton } from '@mui/material'
 import MainCard from '@/ui-component/cards/MainCard'
