@@ -30,6 +30,16 @@ class DispatchBridge {
         return this._enabled && this._controllerUrl.length > 0
     }
 
+    // Convenience wrapper to match route expectations:
+    // bridge.submit(chatflowId, input, flowName) -> Promise<{ taskId } | null>
+    // Delegates to submitTask and adapts the return shape.
+    static async submit(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | null> {
+        // Reuse the existing submission logic. flowName is currently not used
+        // by the bridge, but kept for compatibility with the route signature.
+        const taskId = await this.submitTask(chatflowId, input)
+        return taskId ? { taskId } : null
+    }
+
     // Submit a task to the dispatch controller. Returns a taskId.
     static async submitTask(chatflowId: string, input: any): Promise<string> {
         // If disabled, simulate a skipped task
