@@ -9,7 +9,7 @@ const resources = {
             Upgrade: 'Upgrade',
             Language: 'Language',
             Chinese: 'Chinese',
-            English: 'English',
+            English: '英语',
             AddNew: 'Add New',
             'Search Name or Category': 'Search Name or Category',
             Agentflows: 'Agent Flows',
@@ -41,6 +41,9 @@ const resources = {
             English: 'English',
             AddNew: '新增',
             'Search Name or Category': '搜索名称或类别',
+            'Search Name/Description/Node': '搜索名称/描述/节点',
+            Marketplace: '市场',
+            'Explore and use pre-built templates': '探索并使用预构建模板',
             Agentflows: '代理流程',
             'Multi-agent systems, workflow orchestration': '多智能体系统，工作流编排',
             'Card View': '卡片视图',
@@ -59,7 +62,8 @@ const resources = {
             Profile: '个人信息',
             Logout: '退出登录',
             Login: '登录',
-            NEW: '新'
+            NEW: '新',
+            Framework: '框架'
         }
     }
 }

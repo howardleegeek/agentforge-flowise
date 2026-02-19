@@ -35,6 +35,7 @@ import ItemCard from '@/ui-component/cards/ItemCard'
 import WorkflowEmptySVG from '@/assets/images/workflow_empty.svg'
 import ToolDialog from '@/views/tools/ToolDialog'
 import { MarketplaceTable } from '@/ui-component/table/MarketplaceTable'
+import { useTranslation } from 'react-i18next'
 import ViewHeader from '@/layout/MainLayout/ViewHeader'
 import ErrorBoundary from '@/ErrorBoundary'
 import { TabPanel } from '@/ui-component/tabs/TabPanel'
@@ -79,6 +80,7 @@ const Marketplace = () => {
     useNotifier()
 
     const theme = useTheme()
+    const { t } = useTranslation()
     const { error, setError } = useError()
 
     const [isLoading, setLoading] = useState(true)
@@ -587,9 +589,9 @@ const Marketplace = () => {
                             }
                             onSearchChange={onSearchChange}
                             search={true}
-                            searchPlaceholder='Search Name/Description/Node'
-                            title='Marketplace'
-                            description='Explore and use pre-built templates'
+                            searchPlaceholder={t('Search Name/Description/Node')}
+                            title={t('Marketplace')}
+                            description={t('Explore and use pre-built templates')}
                         >
                             <ToggleButtonGroup
                                 sx={{ borderRadius: 2, height: '100%' }}

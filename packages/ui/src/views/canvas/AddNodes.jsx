@@ -59,6 +59,21 @@ const blacklistCategoriesForAgentCanvas = ['Agents', 'Memory', 'Record Manager',
 
 const agentMemoryNodes = ['agentMemory', 'sqliteAgentMemory', 'postgresAgentMemory', 'mySQLAgentMemory']
 
+// Simple category translator for Chinese UI
+const translateCategory = (cat) => {
+    const map = {
+        'Chat Models': '聊天模型',
+        'Text Splitters': '文本分割器',
+        'Document Loaders': '文档加载器',
+        Embeddings: '嵌入',
+        'Vector Stores': '向量存储',
+        'Record Manager': '记录管理',
+        Tools: '工具',
+        'Tools (MCP)': '工具（MCP）'
+    }
+    return map[cat] ?? cat
+}
+
 // Show blacklisted nodes (exceptions) for agent canvas
 const exceptionsForAgentCanvas = {
     Memory: agentMemoryNodes,
@@ -629,7 +644,9 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                             alignItems: 'center'
                                                                         }}
                                                                     >
-                                                                        <Typography variant='h5'>{category.split(';')[0]}</Typography>
+                                                                        <Typography variant='h5'>
+                                                                            {translateCategory(category.split(';')[0])}
+                                                                        </Typography>
                                                                         &nbsp;
                                                                         <Chip
                                                                             sx={{
@@ -650,7 +667,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                         />
                                                                     </div>
                                                                 ) : (
-                                                                    <Typography variant='h5'>{category}</Typography>
+                                                                    <Typography variant='h5'>{translateCategory(category)}</Typography>
                                                                 )}
                                                             </AccordionSummary>
                                                             <AccordionDetails>
