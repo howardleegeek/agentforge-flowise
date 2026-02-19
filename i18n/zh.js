@@ -1,5 +1,5 @@
 export default {
-        translation: {
+    translation: {
         Language: '语言',
         Providers: '提供者',
         Active: '活动',
