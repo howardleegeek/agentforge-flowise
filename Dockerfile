@@ -1,7 +1,9 @@
-# Build local monorepo image
-# docker build --no-cache -t agentforge .
+# Build AgentForge Docker image
+# docker build -t agentforge .
+# For multi-architecture build (arm64 + amd64):
+# docker buildx build --platform linux/amd64,linux/arm64 -t agentforge .
 
-# Run image
+# Run AgentForge
 # docker run -d -p 3000:3000 agentforge
 
 FROM node:20-alpine

@@ -9,8 +9,10 @@ services:
             - PORT=${PORT:-3000}
 
             # DISPATCH CONFIGURATION
-            - DISPATCH_ENABLED=${DISPATCH_ENABLED:-true}
-            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-https://controller.example.com}
+            # Enable dispatch mode for distributed agent execution
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED:-false}
+            # URL of the dispatch controller service
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-http://localhost:8080}
 
             # DATABASE
             - DATABASE_PATH=${DATABASE_PATH}
