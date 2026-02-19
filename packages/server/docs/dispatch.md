@@ -21,6 +21,13 @@ API Endpoints (mounted under /api/v1/dispatch)
 - GET /nodes
     - Response: list of available Dispatch nodes
 
+Current State (as implemented in this repo)
+
+- dispatch-bridge.ts exists and handles HTTP calls to the Dispatch controller
+- Routes mounted at /api/v1/dispatch with submit/status/nodes
+- DISPATCH_ENABLED and DISPATCH_CONTROLLER_URL control behavior
+- No changes to Flowise core; bridge is optional
+
 Behavior notes
 
 - If DISPATCH_ENABLED is false, all endpoints will skip processing and report as disabled.
