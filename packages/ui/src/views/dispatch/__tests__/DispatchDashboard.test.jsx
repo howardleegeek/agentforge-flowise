@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
 
 // Production component under test
 import DispatchDashboard from '../index.jsx'
@@ -41,4 +42,24 @@ describe('DispatchDashboard', () => {
         expect(screen.getByText(/Running:/)).toBeInTheDocument()
         expect(screen.getByText(/Completed:/)).toBeInTheDocument()
     })
+})
+
+test('auto refresh fetches data every 10s', async () => {
+    jest.useFakeTimers()
+    const apiMock = require('../../../../api/dispatch')
+    apiMock.getNodes.mockClear()
+    render(<DispatchDashboard />)
+
+    // wait for initial fetch
+    await waitFor(() => expect(apiMock.getNodes).toHaveBeenCalled())
+
+    // advance timer by 10 seconds
+    act(() => {
+        jest.advanceTimersByTime(10000)
+    })
+
+    // allow any pending promises to flush
+    await waitFor(() => expect(apiMock.getNodes).toHaveBeenCalledTimes(2))
+
+    jest.useRealTimers()
 })
