@@ -68,6 +68,8 @@ const translateCategory = (cat) => {
         'Document Loaders': '文档加载器',
         // Singular Agents category translation for Chinese UI
         Agents: '智能体',
+        // Also cover alternate key variants that may appear from data sources
+        Agentflows: '代理流程',
         Embeddings: '嵌入',
         'Vector Stores': '向量存储',
         'Record Manager': '记录管理',
