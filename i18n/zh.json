@@ -57,6 +57,21 @@
         "No Marketplace Yet": "尚无市场模板",
         "No Saved Custom Templates": "暂无已保存的自定义模板",
         "Agree": "同意",
-        "Disagree": "不同意"
+        "Disagree": "不同意",
+        "View Messages": "查看消息",
+        "View Leads": "查看线索",
+        "Upsert History": "新增/更新历史",
+        "Configuration": "配置",
+        "Save As Template": "另存为模板",
+        "Duplicate Chatflow": "复制聊天流程",
+        "Load Chatflow": "加载聊天流程",
+        "Export Chatflow": "导出聊天流程",
+        "Delete Chatflow": "删除聊天流程",
+        "Explore and use pre-built templates": "探索并使用预构建模板",
+        "Agent Flows": "代理流程",
+        "Card View": "卡片视图",
+        "List View": "列表视图",
+        "Multi Agents": "多智能体",
+        "Sequential Agents": "顺序智能体"
     }
 }

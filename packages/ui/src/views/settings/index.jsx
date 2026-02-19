@@ -120,7 +120,7 @@ const Settings = ({ chatflow, isSettingsOpen, isCustomAssistant, anchorEl, isAge
                 }}
             >
                 <ListItemIcon sx={{ my: 'auto', minWidth: !menu?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
-                <ListItemText primary={<Typography color='inherit'>{menu.title}</Typography>} />
+                <ListItemText primary={<Typography color='inherit'>{t(menu.title)}</Typography>} />
             </ListItemButton>
         )
     })
