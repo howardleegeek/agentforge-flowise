@@ -133,6 +133,11 @@ const DispatchDashboard: React.FC = () => {
             )}
 
             {loading && <Typography variant='body2'>Loading...</Typography>}
+            {!loading && nodes.length === 0 && (
+                <Typography variant='body2' color='text.secondary' sx={{ mt: 1 }}>
+                    No nodes found
+                </Typography>
+            )}
             {error && (
                 <Typography variant='body2' color='error'>
                     {error}
