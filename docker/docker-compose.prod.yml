@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+    agentforge:
+        image: agentforge
+        environment:
+            - PORT=${PORT}
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED}
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL}
+            - DATABASE_PATH=${DATABASE_PATH}
+            - DATABASE_TYPE=${DATABASE_TYPE}
+            - DATABASE_PORT=${DATABASE_PORT}
+            - DATABASE_HOST=${DATABASE_HOST}
+            - DATABASE_NAME=${DATABASE_NAME}
+            - DATABASE_USER=${DATABASE_USER}
+            - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+            - DATABASE_SSL=${DATABASE_SSL}
+            - DATABASE_SSL_KEY_BASE64=${DATABASE_SSL_KEY_BASE64}
+        ports:
+            - '${PORT}:${PORT}'
+        restart: always
+        volumes:
+            - ~/.agentforge:/root/.agentforge
+        entrypoint: /bin/sh -c "sleep 3; pnpm start"

@@ -1,11 +1,15 @@
 version: '3.1'
 
 services:
-    flowise:
-        image: flowiseai/flowise:latest
+    agentforge:
+        image: agentforge
         restart: always
         environment:
             - PORT=${PORT}
+
+            # DISPATCH CONFIGURATION
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED}
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL}
 
             # DATABASE
             - DATABASE_PATH=${DATABASE_PATH}
@@ -142,5 +146,5 @@ services:
             retries: 5
             start_period: 30s
         volumes:
-            - ~/.flowise:/root/.flowise
-        entrypoint: /bin/sh -c "sleep 3; flowise start"
+            - ~/.agentforge:/root/.agentforge
+        entrypoint: /bin/sh -c "sleep 3; pnpm start"
