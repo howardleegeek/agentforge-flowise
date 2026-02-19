@@ -89,7 +89,10 @@ const i18n = i18next.createInstance()
 i18n.init({
     resources,
     lng: getInitialLanguage(), // initialize to stored language or Chinese by default
-    fallbackLng: 'en',
+    // Fall back to Chinese translations when a key is missing in the current
+    // language. This keeps the UI localized for Chinese users even if a key is
+    // missing in a non-Chinese translation.
+    fallbackLng: 'zh',
     ns: ['translation'],
     defaultNS: 'translation',
     interpolation: { escapeValue: false }
