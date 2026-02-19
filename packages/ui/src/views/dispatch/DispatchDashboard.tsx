@@ -1,7 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
 // Auto-refresh is performed every 10 seconds.
 import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } from '@mui/material'
+
+// API client for dispatch endpoints. Reuses existing api/dispatch module to keep
+// a consistent data-fetching surface across the UI.
+import apiDispatch from '@/api/dispatch'
 
 type NodeInfo = {
     name: string
@@ -28,22 +32,17 @@ const DispatchDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [lastUpdated, setLastUpdated] = useState<string | null>(null)
-    // Abort controller to cancel in-flight fetches on unmount
-    const abortCtrl = useRef<AbortController | null>(null)
 
+    // No manual AbortController; we rely on api client semantics for cancellation if needed
     const fetchData = async () => {
-        // cancel any in-flight requests from a previous interval
-        abortCtrl.current?.abort()
-        abortCtrl.current = new AbortController()
-        const signal = abortCtrl.current.signal
         try {
             setError(null)
             // Nodes
-            const nodesResp = await fetch('/api/v1/dispatch/nodes', { signal })
-            if (nodesResp.ok) {
-                const data = await nodesResp.json()
-                // Normalize to NodeInfo[]; tolerate different shapes
-                const normalized: NodeInfo[] = Array.isArray(data)
+            let normalized: NodeInfo[] = []
+            try {
+                const nodesResp: any = await apiDispatch.getNodes({})
+                const data = nodesResp?.data?.data ?? nodesResp?.data ?? []
+                normalized = Array.isArray(data)
                     ? data.map((n) => ({
                           name: (n?.name ?? '') as string,
                           status: (n?.status ?? 'unknown') as string,
@@ -51,21 +50,46 @@ const DispatchDashboard: React.FC = () => {
                           slotsTotal: n?.slotsTotal ?? n?.slotsCap ?? 0
                       }))
                     : []
-                setNodes(normalized)
+            } catch {
+                normalized = []
             }
+            // Slots (optional: enrich node data if provided)
+            try {
+                const slotsResp: any = await apiDispatch.getSlots({})
+                const slotsData = slotsResp?.data?.data ?? slotsResp?.data ?? []
+                const byNode: Record<string, { used?: number; total?: number }> = {}
+                ;(Array.isArray(slotsData) ? slotsData : []).forEach((s) => {
+                    const id = s?.nodeId ?? s?.name ?? ''
+                    byNode[id] = {
+                        used: s?.used ?? 0,
+                        total: s?.total ?? 0
+                    }
+                })
+                normalized = normalized.map((n) => ({
+                    ...n,
+                    slotsUsed: byNode[n.name]?.used ?? n.slotsUsed,
+                    slotsTotal: byNode[n.name]?.total ?? n.slotsTotal
+                }))
+            } catch {
+                // ignore if no slots data
+            }
+            setNodes(normalized)
 
             // Tasks summary
-            const tasksResp = await fetch('/api/v1/dispatch/tasks', { signal })
-            if (tasksResp.ok) {
-                const data = await tasksResp.json()
-                // Expecting { pending, running, completed }
-                setTasks({
-                    pending: data?.pending ?? 0,
-                    running: data?.running ?? 0,
-                    completed: data?.completed ?? 0
-                })
+            let queueCounts: any = { pending: 0, running: 0, completed: 0 }
+            try {
+                const queueResp: any = await apiDispatch.getQueue({})
+                const data = queueResp?.data?.data ?? queueResp?.data ?? queueResp
+                queueCounts = {
+                    pending: data?.counts?.pending ?? data?.pending ?? 0,
+                    running: data?.counts?.running ?? data?.running ?? 0,
+                    completed: data?.counts?.completed ?? data?.completed ?? 0
+                }
+            } catch {
+                queueCounts = { pending: 0, running: 0, completed: 0 }
             }
-        } catch (e) {
+            setTasks(queueCounts)
+        } catch {
             setError('Failed to fetch dispatch data')
         } finally {
             setLoading(false)
@@ -78,7 +102,6 @@ const DispatchDashboard: React.FC = () => {
         const t = setInterval(fetchData, 10000)
         return () => {
             clearInterval(t)
-            abortCtrl.current?.abort()
         }
     }, [])
 
