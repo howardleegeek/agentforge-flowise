@@ -6,11 +6,11 @@
 
 <div align="center">
 
-[![Release Notes](https://img.shields.io/github/release/FlowiseAI/Flowise)](https://github.com/FlowiseAI/Flowise/releases)
+[![Release Notes](https://img.shields.io/github/release/oyster/agentforge)](https://github.com/oyster/agentforge/releases)
 [![Discord](https://img.shields.io/discord/1087698854775881778?label=Discord&logo=discord)](https://discord.gg/jbaHfsRVBW)
-[![Twitter Follow](https://img.shields.io/twitter/follow/FlowiseAI?style=social)](https://twitter.com/FlowiseAI)
-[![GitHub star chart](https://img.shields.io/github/stars/FlowiseAI/Flowise?style=social)](https://star-history.com/#FlowiseAI/Flowise)
-[![GitHub fork](https://img.shields.io/github/forks/FlowiseAI/Flowise?style=social)](https://github.com/FlowiseAI/Flowise/fork)
+[![Twitter Follow](https://img.shields.io/twitter/follow/agentforge?style=social)](https://twitter.com/agentforge)
+[![GitHub star chart](https://img.shields.io/github/stars/oyster/agentforge?style=social)](https://star-history.com/#oyster/agentforge)
+[![GitHub fork](https://img.shields.io/github/forks/oyster/agentforge?style=social)](https://github.com/oyster/agentforge/fork)
 
 English | [繁體中文](./i18n/README-TW.md) | [简体中文](./i18n/README-ZH.md) | [日本語](./i18n/README-JA.md) | [한국어](./i18n/README-KR.md)
 
@@ -37,14 +37,14 @@ English | [繁體中文](./i18n/README-TW.md) | [简体中文](./i18n/README-ZH.
 
 Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
 
-1. Install Flowise
+1. Install AgentForge
     ```bash
-    npm install -g flowise
+    npm install -g agentforge
     ```
-2. Start Flowise
+2. Start AgentForge
 
     ```bash
-    npx flowise start
+    agentforge start
     ```
 
 3. Open [http://localhost:3000](http://localhost:3000)
@@ -82,7 +82,7 @@ Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
 
 ## 👨‍💻 Developers
 
-Flowise has 3 different modules in a single mono repository.
+AgentForge has 3 different modules in a single mono repository.
 
 - `server`: Node backend to serve API logics
 - `ui`: React frontend
@@ -101,7 +101,7 @@ Flowise has 3 different modules in a single mono repository.
 1.  Clone the repository:
 
     ```bash
-    git clone https://github.com/FlowiseAI/Flowise.git
+    git clone https://github.com/oyster/agentforge.git
     ```
 
 2.  Go into repository folder:
@@ -172,7 +172,7 @@ Flowise supports different environment variables to configure your instance. You
 
 You can view the Flowise Docs [here](https://docs.flowiseai.com/)
 
-## 🌐 Self Host
+## 🌐 AgentForge Cloud
 
 Deploy Flowise self-hosted in your existing infrastructure, we support various [deployments](https://docs.flowiseai.com/configuration/deployment)
 
@@ -185,7 +185,7 @@ Deploy Flowise self-hosted in your existing infrastructure, we support various [
     <summary>Others</summary>
     - [Railway](https://docs.flowiseai.com/configuration/deployment/railway)
 
-        [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
+                    [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
 
     - [Northflank](https://northflank.com/stacks/deploy-flowiseai)
 
@@ -211,11 +211,11 @@ Deploy Flowise self-hosted in your existing infrastructure, we support various [
 
         [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
 
-      </details>
+                  </details>
 
-## ☁️ Flowise Cloud
+## ☁️ AgentForge Cloud
 
-Get Started with [Flowise Cloud](https://flowiseai.com/).
+Get Started with [AgentForge Cloud](https://agentforge.io/).
 
 ## 🙋 Support
 
@@ -225,13 +225,13 @@ Feel free to ask any questions, raise problems, and request new features in [Dis
 
 Thanks go to these awesome contributors
 
-<a href="https://github.com/FlowiseAI/Flowise/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=FlowiseAI/Flowise" />
+<a href="https://github.com/oyster/agentforge/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=oyster/agentforge" />
 </a><br><br>
 
 See [Contributing Guide](CONTRIBUTING.md). Reach out to us at [Discord](https://discord.gg/jbaHfsRVBW) if you have any questions or issues.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=FlowiseAI/Flowise&type=Timeline)](https://star-history.com/#FlowiseAI/Flowise&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=oyster/agentforge&type=Timeline)](https://star-history.com/#oyster/agentforge&Date)
 
 ## 📄 License
 

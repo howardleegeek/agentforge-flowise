@@ -1,6 +1,2 @@
-// Simple branding utility to expose current product name
+// Branding constants for AgentForge (formerly Flowise)
 export const BRAND_NAME = 'AgentForge'
-
-export function getBrand(): string {
-    return BRAND_NAME
-}
