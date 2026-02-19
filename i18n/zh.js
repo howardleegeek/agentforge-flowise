@@ -39,6 +39,7 @@ export default {
         LangChain: '语言链',
         LlamaIndex: 'Llama 索引',
         AgentFlows: '代理流程',
+        Agentflows: '代理流程',
         'Multi Agents': '多智能体',
         'Sequential Agents': '顺序智能体',
         'Explore and use pre-built templates': '探索并使用预构建模板',

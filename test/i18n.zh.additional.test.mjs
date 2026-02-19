@@ -14,8 +14,15 @@ async function run() {
     const tListView = zh?.translation?.['List View']
     const tInactive = zh?.translation?.Inactive
     const tLangChain = zh?.translation?.LangChain
+    // New: ensure translation for Agentflows key exists in zh.json/zh.js
+    const tAgentflows = zh?.translation?.['Agentflows'] ?? zh?.translation?.['Agent Flows']
     // Expect Chinese translations for these keys after patch
-    const ok = tCardView === '卡片视图' && tListView === '列表视图' && tInactive === '未激活' && tLangChain === '语言链'
+    const ok =
+        tCardView === '卡片视图' &&
+        tListView === '列表视图' &&
+        tInactive === '未激活' &&
+        tLangChain === '语言链' &&
+        tAgentflows === '代理流程'
     if (ok) {
         console.log('PASS: zh.js translations updated (additional checks)')
         process.exit(0)
