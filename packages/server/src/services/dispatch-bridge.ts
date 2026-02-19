@@ -34,15 +34,17 @@ class DispatchBridge {
     // bridge.submit(chatflowId, input, flowName) -> Promise<{ taskId } | null>
     // Delegates to submitTask and adapts the return shape.
     static async submit(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | null> {
-        // Reuse the existing submission logic. flowName is currently not used
-        // by the bridge, but kept for compatibility with the route signature.
-        const taskId = await this.submitTask(chatflowId, input)
+        // Reuse the existing submission logic. Pass flowName through to the underlying submitTask
+        // so that the controller payload can carry the flow name when provided.
+        const taskId = await this.submitTask(chatflowId, input, flowName)
         return taskId ? { taskId } : null
     }
 
     // Compatibility wrapper: expose status() same as getStatus()
-    static async status(taskId: string): Promise<string> {
-        return this.getStatus(taskId)
+    // Return an object for compatibility with tests expecting { status: '...' }
+    static async status(taskId: string): Promise<{ status: string }> {
+        const s = await this.getStatus(taskId)
+        return { status: s }
     }
 
     // Compatibility wrapper: expose nodes() that delegates to getNodes()
@@ -50,8 +52,26 @@ class DispatchBridge {
         return this.getNodes()
     }
 
+    // Instance methods to satisfy tests that instantiate the class
+    async submit(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | null> {
+        // Delegate to static implementation
+        // @ts-ignore
+        return (DispatchBridge as any).submit(chatflowId, input, flowName)
+    }
+    async submitTask(chatflowId: string, input: any, flowName?: string): Promise<string> {
+        // @ts-ignore
+        return (DispatchBridge as any).submitTask(chatflowId, input, flowName)
+    }
+    async status(taskId: string): Promise<{ status: string }> {
+        // @ts-ignore
+        return (DispatchBridge as any).status(taskId)
+    }
+    async nodes(): Promise<any> {
+        // @ts-ignore
+        return (DispatchBridge as any).nodes()
+    }
     // Submit a task to the dispatch controller. Returns a taskId.
-    static async submitTask(chatflowId: string, input: any): Promise<string> {
+    static async submitTask(chatflowId: string, input: any, flowName?: string): Promise<string> {
         // If disabled, simulate a skipped task
         if (!this._enabled || this._controllerUrl.length === 0) {
             const taskId = `dispatch-skip-${Date.now()}-${Math.floor(Math.random() * 1000)}`
@@ -64,11 +84,12 @@ class DispatchBridge {
             return taskId
         }
 
-        const payload = {
+        const payload: any = {
             chatflowId,
             input,
             callbackUrl: process.env.DISPATCH_CALLBACK_URL || ''
         }
+        if (flowName) payload.flowName = flowName
 
         const res: any = await this._postJson(`${this._controllerUrl.replace(/\/$/, '')}/submit`, payload)
         const taskId = (res && res.taskId) || `dispatch-${Date.now()}`
@@ -158,4 +179,9 @@ class DispatchBridge {
     }
 }
 
+// Instance-compatible wrappers (to satisfy tests that instantiate DispatchBridge)
+// These simply delegate to the static implementations above.
+// Removed: DispatchBridgeInstanceWrapper (no longer needed)
+
 export { DispatchBridge }
+export default DispatchBridge
