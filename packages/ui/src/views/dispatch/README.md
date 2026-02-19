@@ -12,3 +12,4 @@ What this change adds (verification guidance):
 - Dispatch Dashboard 展示节点卡片，包含名称、Slots 和状态信息。
 - 仪表盘显示 Pending、Running、Completed 三类任务的计数。
 - 构建通过，执行 npm run build 即可。
+- Dispatch 面板已在侧边栏完成集成，点击“Dispatch”进入后可查看节点、Slots 使用率与任务队列的实时状态。无额外依赖。
