@@ -67,7 +67,7 @@ const DispatchDashboard = () => {
                                 const usage = Math.min(100, Math.max(0, ((slotInfo?.used || 0) / (slotInfo?.total || 1)) * 100))
                                 return (
                                     <Grid item xs={12} sm={6} md={4} key={node.id}>
-                                        <Card variant='outlined'>
+                                        <Card variant='outlined' aria-label={`Node ${node.name || node.id}`}>
                                             <CardContent>
                                                 <Typography variant='subtitle1'>{node.name || node.id}</Typography>
                                                 <Typography variant='body2' color='text.secondary'>
