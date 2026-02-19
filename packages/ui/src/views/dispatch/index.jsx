@@ -7,6 +7,7 @@ import dispatchApi from '@/api/dispatch'
 import { useError } from '@/store/context/ErrorContext'
 
 // Simple Dispatch Dashboard: show nodes, slots usage and task queue
+// NOTE: UI auto-refreshes data every 10 seconds (see REFRESH_INTERVAL_MS)
 // This DispatchDashboard is implemented per Task AF04: shows cluster nodes, slots usage, and task queue
 // Data is fetched from /api/v1/dispatch/* endpoints and auto-refreshed every 10s
 const DispatchDashboard = () => {
