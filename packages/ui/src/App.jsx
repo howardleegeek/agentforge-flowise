@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux'
 
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline, StyledEngineProvider } from '@mui/material'
+import { I18nextProvider } from 'react-i18next'
+import i18n from './i18n'
 
 // routing
 import Routes from '@/routes'
@@ -18,14 +20,16 @@ const App = () => {
     const customization = useSelector((state) => state.customization)
 
     return (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={themes(customization)}>
-                <CssBaseline />
-                <NavigationScroll>
-                    <Routes />
-                </NavigationScroll>
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <I18nextProvider i18n={i18n}>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={themes(customization)}>
+                    <CssBaseline />
+                    <NavigationScroll>
+                        <Routes />
+                    </NavigationScroll>
+                </ThemeProvider>
+            </StyledEngineProvider>
+        </I18nextProvider>
     )
 }
 

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 // material-ui
 import { Button, Avatar, Box, ButtonBase, Switch, Typography, Link } from '@mui/material'
 import { useTheme, styled, darken } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 // project imports
 import LogoSection from '../LogoSection'
@@ -148,6 +149,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
     const customization = useSelector((state) => state.customization)
     const logoutApi = useApi(accountApi.logout)
+    const { t, i18n } = useTranslation()
 
     const [isDark, setIsDark] = useState(customization.isDarkMode)
     const dispatch = useDispatch()
@@ -171,7 +173,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
     const signOutClicked = () => {
         logoutApi.request()
         enqueueSnackbar({
-            message: 'Logging out...',
+            message: t('Logging out...'),
             options: {
                 key: new Date().getTime() + Math.random(),
                 variant: 'success',
@@ -294,7 +296,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     onClick={() => setIsPricingOpen(true)}
                     startIcon={<IconSparkles size={20} />}
                 >
-                    Upgrade
+                    {t('Upgrade')}
                 </Button>
             )}
             {isPricingOpen && isCloud && (
@@ -310,6 +312,18 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 />
             )}
             <MaterialUISwitch checked={isDark} onChange={changeDarkMode} />
+            {/* Language switcher: Chinese / English */}
+            <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+                <Typography variant='caption' sx={{ mr: 1 }}>
+                    {t('Language')}:
+                </Typography>
+                <Button size='small' onClick={() => i18n.changeLanguage('zh')} sx={{ px: 1.5 }}>
+                    {t('Chinese')}
+                </Button>
+                <Button size='small' onClick={() => i18n.changeLanguage('en')} sx={{ px: 1.5 }}>
+                    {t('English')}
+                </Button>
+            </Box>
             <Box sx={{ ml: 2 }}></Box>
             <ProfileSection handleLogout={signOutClicked} />
         </>

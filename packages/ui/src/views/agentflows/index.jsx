@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 // material-ui
 import { Chip, Box, Stack, ToggleButton, ToggleButtonGroup, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 // project imports
 import MainCard from '@/ui-component/cards/MainCard'
@@ -37,6 +38,7 @@ const Agentflows = () => {
     const navigate = useNavigate()
     const theme = useTheme()
     const customization = useSelector((state) => state.customization)
+    const { t } = useTranslation()
 
     const [isLoading, setLoading] = useState(true)
     const [images, setImages] = useState({})
@@ -177,9 +179,9 @@ const Agentflows = () => {
                     <ViewHeader
                         onSearchChange={onSearchChange}
                         search={true}
-                        searchPlaceholder='Search Name or Category'
-                        title='Agentflows'
-                        description='Multi-agent systems, workflow orchestration'
+                        searchPlaceholder={t('Search Name or Category')}
+                        title={t('Agentflows')}
+                        description={t('Multi-agent systems, workflow orchestration')}
                     >
                         <ToggleButtonGroup
                             sx={{ borderRadius: 2, maxHeight: 40 }}
@@ -198,7 +200,7 @@ const Agentflows = () => {
                                 value='v2'
                                 title='V2'
                             >
-                                <Chip sx={{ mr: 1 }} label='NEW' size='small' color='primary' />
+                                <Chip sx={{ mr: 1 }} label={t('NEW')} size='small' color='primary' />
                                 V2
                             </ToggleButton>
                             <ToggleButton
@@ -254,7 +256,7 @@ const Agentflows = () => {
                             startIcon={<IconPlus />}
                             sx={{ borderRadius: 2, height: 40 }}
                         >
-                            Add New
+                            {t('AddNew')}
                         </StyledPermissionButton>
                     </ViewHeader>
 
