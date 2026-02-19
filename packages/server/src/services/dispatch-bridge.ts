@@ -1,102 +1,81 @@
-// Dispatch bridge: lightweight adapter to dispatch controller over HTTP
-// - Enables optional integration via DISPATCH_ENABLED / DISPATCH_CONTROLLER_URL
-// - Converts Flowise chatflow executions into dispatch tasks
-// - Fetches task status and available nodes from controller
+// Ensure fetch is visible for environments without DOM lib typings
+declare const fetch: any
 
-type Json = any
-
-export class DispatchBridge {
-    private baseUrl: string
+export default class DispatchBridge {
+    private controllerUrl: string
     private enabled: boolean
 
     constructor() {
-        // Enabled when env flag is true (case-insensitive)
-        const enabledVal = process.env.DISPATCH_ENABLED
-        this.enabled = typeof enabledVal === 'string' && enabledVal.toLowerCase() === 'true'
-        const url = process.env.DISPATCH_CONTROLLER_URL || ''
-        // Normalize URL (remove trailing slash if any)
-        this.baseUrl = url.endsWith('/') ? url.slice(0, -1) : url
+        this.controllerUrl = (process.env.DISPATCH_CONTROLLER_URL || '').trim()
+        // enable flag is a combination: enabled AND controller url provided
+        const rawEnabled = (process.env.DISPATCH_ENABLED || 'false').toLowerCase()
+        this.enabled = rawEnabled === 'true' || rawEnabled === '1'
     }
 
-    isEnabled(): boolean {
-        return this.enabled
+    public isEnabled(): boolean {
+        // Bridge is usable only when explicitly enabled and URL is configured
+        return this.enabled && this.controllerUrl.length > 0
     }
 
-    private async fetchJson(url: string, options?: RequestInit): Promise<Json> {
-        // If not enabled or no base URL, surface a clear error
-        if (!this.enabled) {
-            throw new Error('Dispatch is disabled by configuration (DISPATCH_ENABLED)')
+    private async postJson(path: string, body: any): Promise<any> {
+        if (!this.isEnabled()) {
+            return null
         }
-        if (!this.baseUrl) {
-            throw new Error('DISPATCH_CONTROLLER_URL is not configured')
-        }
-        const resp = await (globalThis as any).fetch(url, {
-            method: options?.method ?? 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(options?.headers as any)
-            },
-            body: options?.body as any
-        })
-        if (!resp.ok) {
-            const text = await resp.text()
-            throw new Error(`Dispatch controller HTTP ${resp.status}: ${text}`)
-        }
-        // Some endpoints may return no body
-        const ct = resp.headers.get('content-type') || ''
-        if (ct.includes('application/json')) {
-            return await resp.json()
-        }
-        return {}
-    }
-
-    async submit(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | null> {
-        if (!this.enabled) return null
-        const payload = { chatflowId, input, flowName }
-
-        // Try a couple of conventional endpoints for dispatch submission
-        const primary = `${this.baseUrl.replace(/\/$/, '')}/dispatch/submit`
-        const secondary = `${this.baseUrl.replace(/\/$/, '')}/api/v1/dispatch/submit`
-
         try {
-            const res = await this.fetchJson(primary, {
+            const res = await fetch(`${this.controllerUrl}${path}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(body)
             })
-            return { taskId: res?.taskId ?? '' }
-        } catch {
-            // Fall back to secondary endpoint
-            const res2 = await this.fetchJson(secondary, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            return { taskId: res2?.taskId ?? '' }
+            if (!res.ok) {
+                // Return null to indicate not dispatched
+                return null
+            }
+            return await res.json()
+        } catch (e) {
+            // swallow and signal not available
+            return null
         }
     }
 
+    private async getJson(path: string): Promise<any> {
+        if (!this.isEnabled()) {
+            return null
+        }
+        try {
+            const res = await fetch(`${this.controllerUrl}${path}`, {
+                method: 'GET'
+            })
+            if (!res.ok) {
+                return null
+            }
+            return await res.json()
+        } catch (e) {
+            return null
+        }
+    }
+
+    // Submit a chatflow/workflow to dispatch controller
+    async submit(chatflowId: string, input?: any, flowName?: string): Promise<{ taskId: string } | null> {
+        const payload: any = { chatflowId }
+        if (input !== undefined) payload.input = input
+        if (flowName) payload.flowName = flowName
+        const result = await this.postJson('/submit', payload)
+        if (result && result.taskId) {
+            return { taskId: String(result.taskId) }
+        }
+        return null
+    }
+
+    // Query status of a dispatched task
     async status(taskId: string): Promise<any> {
-        if (!this.enabled) return { status: 'DISPATCH_DISABLED' }
-        const primary = `${this.baseUrl.replace(/\/$/, '')}/dispatch/status/${taskId}`
-        const secondary = `${this.baseUrl.replace(/\/$/, '')}/api/v1/dispatch/status/${taskId}`
-        try {
-            return await this.fetchJson(primary)
-        } catch {
-            return await this.fetchJson(secondary)
-        }
+        const data = await this.getJson(`/status/${encodeURIComponent(taskId)}`)
+        return data
     }
 
+    // List available dispatch nodes
     async nodes(): Promise<any> {
-        if (!this.enabled) return { status: 'DISPATCH_DISABLED' }
-        const primary = `${this.baseUrl.replace(/\/$/, '')}/dispatch/nodes`
-        const secondary = `${this.baseUrl.replace(/\/$/, '')}/api/v1/dispatch/nodes`
-        try {
-            return await this.fetchJson(primary)
-        } catch {
-            return await this.fetchJson(secondary)
-        }
+        const data = await this.getJson('/nodes')
+        return data
     }
 }
-
-export default DispatchBridge
