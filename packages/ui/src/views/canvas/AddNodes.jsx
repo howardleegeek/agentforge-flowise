@@ -74,6 +74,8 @@ const translateCategory = (cat) => {
         // Additional categories for Chinese UI
         Memory: '内存',
         Utilities: '实用工具',
+        LangChain: '语言链',
+        LlamaIndex: 'Llama 索引',
         'Agent Flows': '代理流程',
         'Multi Agents': '多智能体',
         'Sequential Agents': '顺序智能体'
@@ -414,9 +416,8 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
     const handleOpenDialog = () => {
         setOpenDialog(true)
         setDialogProps({
-            title: 'What would you like to build?',
-            description:
-                'Enter your prompt to generate an agentflow. Performance may vary with different models. Only nodes and edges are generated, you will need to fill in the input fields for each node.'
+            title: t('What would you like to build?'),
+            description: t('Agentflow generation description')
         })
     }
 
@@ -495,7 +496,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                     <Box sx={{ p: 2 }}>
                                         <Stack>
-                                            <Typography variant='h4'>Add Nodes</Typography>
+                                            <Typography variant='h4'>{t('Add Nodes')}</Typography>
                                         </Stack>
                                         <OutlinedInput
                                             // eslint-disable-next-line
@@ -504,7 +505,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                             id='input-search-node'
                                             value={searchValue}
                                             onChange={(e) => filterSearch(e.target.value)}
-                                            placeholder='Search nodes'
+                                            placeholder={t('Search nodes')}
                                             startAdornment={
                                                 <InputAdornment position='start'>
                                                     <IconSearch stroke={1.5} size='1rem' color={theme.palette.grey[500]} />
@@ -520,7 +521,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                             color: theme.palette.grey[900]
                                                         }
                                                     }}
-                                                    title='Clear Search'
+                                                    title={t('Clear Search')}
                                                 >
                                                     <IconX
                                                         stroke={1.5}
@@ -590,7 +591,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                         iconPosition='start'
                                                         sx={{ minHeight: '50px', height: '50px' }}
                                                         key={index}
-                                                        label={item}
+                                                        label={t(item)}
                                                         {...a11yProps(index)}
                                                     ></Tab>
                                                 ))}

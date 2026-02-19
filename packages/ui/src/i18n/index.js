@@ -81,7 +81,18 @@ const resources = {
             Temperature: '温度',
             Model: '模型',
             'None Alt': '无',
-            'None State': '无'
+            'None State': '无',
+            // Additional UI strings for Chinese UI enhancements
+            'Add Nodes': '添加节点',
+            'Generate Agentflow': '生成代理流程',
+            'What would you like to build?': '你想构建什么？',
+            'Agentflow generation description':
+                '输入提示以生成代理流程。不同模型的性能可能不同。仅生成节点与边，您需要为每个节点填写输入字段。',
+            'Search nodes': '搜索节点',
+            'Clear Search': '清除搜索',
+            LangChain: '语言链',
+            LlamaIndex: 'Llama 索引',
+            Utilities: '实用工具'
         }
     }
 }
