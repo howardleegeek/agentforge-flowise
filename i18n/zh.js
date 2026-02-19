@@ -15,6 +15,8 @@ export default {
         'What would you like to build?': '你想构建什么？',
         'Agentflow generation description': 'Agentflow 生成描述',
         Chinese: '简体中文',
+        'Search Name or Category': '按名称或类别搜索',
+        NEW: '新',
         English: '英文',
         Cancel: '取消',
         Save: '保存',

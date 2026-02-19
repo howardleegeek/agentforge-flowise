@@ -23,6 +23,9 @@ const resources = {
             'What would you like to build?': 'What would you like to build?',
             'Agentflow generation description': 'Agentflow generation description',
             Language: 'Language',
+            // Add missing English keys to keep parity with Chinese translations
+            'Search Name/Description/Node': 'Search Name/Description/Node',
+            NEW: 'New',
             Chinese: 'Chinese',
             English: 'English',
             Cancel: 'Cancel',
