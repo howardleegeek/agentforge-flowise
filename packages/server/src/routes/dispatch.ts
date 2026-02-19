@@ -6,7 +6,7 @@ const router = express.Router()
 router.use(express.json())
 
 // Submit a workflow to dispatch
-router.post('/api/v1/dispatch/submit', async (req: Request, res: Response) => {
+router.post('/submit', async (req: Request, res: Response) => {
     // Rely on the bridge to determine if dispatch is enabled
     if (!DispatchBridge.isEnabled()) {
         return res.json({ ok: true, dispatched: false, reason: 'DISPATCH_DISABLED' })
@@ -24,7 +24,7 @@ router.post('/api/v1/dispatch/submit', async (req: Request, res: Response) => {
 })
 
 // Check dispatch task status
-router.get('/api/v1/dispatch/status/:taskId', async (req: Request, res: Response) => {
+router.get('/status/:taskId', async (req: Request, res: Response) => {
     const { taskId } = req.params
     try {
         const status = await DispatchBridge.getStatus(taskId)
@@ -35,7 +35,7 @@ router.get('/api/v1/dispatch/status/:taskId', async (req: Request, res: Response
 })
 
 // List available dispatch nodes
-router.get('/api/v1/dispatch/nodes', async (_req: Request, res: Response) => {
+router.get('/nodes', async (_req: Request, res: Response) => {
     try {
         const nodes = await DispatchBridge.getNodes()
         res.json({ nodes })
@@ -45,7 +45,7 @@ router.get('/api/v1/dispatch/nodes', async (_req: Request, res: Response) => {
 })
 
 // Callback endpoint for task completion from dispatch controller
-router.post('/api/v1/dispatch/callback', (req: Request, res: Response) => {
+router.post('/callback', (req: Request, res: Response) => {
     const { taskId, status } = req.body || {}
     if (!taskId) {
         return res.status(400).json({ error: 'taskId is required' })
