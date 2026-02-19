@@ -10,6 +10,8 @@ import { useError } from '@/store/context/ErrorContext'
 // This DispatchDashboard is implemented per Task AF04: shows cluster nodes, slots usage, and task queue
 // Data is fetched from /api/v1/dispatch/* endpoints and auto-refreshed every 10s
 const DispatchDashboard = () => {
+    // refresh interval in ms
+    const REFRESH_INTERVAL_MS = 10000
     const { error } = useError()
     const [nodes, setNodes] = useState([])
     const [slots, setSlots] = useState([])
@@ -42,7 +44,7 @@ const DispatchDashboard = () => {
 
     useEffect(() => {
         fetchData()
-        const t = setInterval(fetchData, 10000)
+        const t = setInterval(fetchData, REFRESH_INTERVAL_MS)
         return () => clearInterval(t)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
