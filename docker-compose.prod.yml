@@ -3,6 +3,14 @@ version: '3.1'
 services:
     agentforge:
         # Production overrides for deployment
+        restart: unless-stopped
         environment:
             - DISPATCH_ENABLED=${DISPATCH_ENABLED_PROD:-true}
             - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL_PROD:-https://controller-prod.example.com}
+            - LOG_LEVEL=${LOG_LEVEL:-info}
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:${PORT:-3000}/api/v1/ping']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 30s

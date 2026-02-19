@@ -17,3 +17,17 @@ def test_env_example_contains_dispatch_doc():
         content = f.read()
     assert 'DISPATCH_CONTROLLER_URL' in content, ".env.example must document DISPATCH_CONTROLLER_URL"
     assert 'DISPATCH_ENABLED' in content, ".env.example must document DISPATCH_ENABLED"
+    assert 'DISPATCH_ENABLED_PROD' in content, ".env.example must define DISPATCH_ENABLED_PROD"
+    assert 'DISPATCH_CONTROLLER_URL_PROD' in content, ".env.example must define DISPATCH_CONTROLLER_URL_PROD"
+
+
+def test_prod_compose_overrides_dispatch_env():
+    path = 'docker-compose.prod.yml'
+    assert os.path.exists(path), "docker-compose.prod.yml must exist"
+    with open(path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    assert 'DISPATCH_ENABLED_PROD' in content, "docker-compose.prod.yml must use DISPATCH_ENABLED_PROD"
+    assert (
+        'DISPATCH_CONTROLLER_URL_PROD' in content
+    ), "docker-compose.prod.yml must use DISPATCH_CONTROLLER_URL_PROD"
