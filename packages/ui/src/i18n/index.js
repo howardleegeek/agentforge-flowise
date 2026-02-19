@@ -67,7 +67,21 @@ const resources = {
             Active: '活动中',
             // UI/UX common status labels
             // (added to improve Chinese UI consistency across dashboards)
-            Framework: '框架'
+            Framework: '框架',
+            // Additional UI strings used by the app components
+            // Basic control labels
+            Providers: '提供者',
+            None: '无',
+            LanguageLabel: '语言',
+            Language: '语言',
+            // Common form field labels used by some providers
+            'Connect Credential': '连接凭证',
+            'Base URL': '基础地址',
+            Prompt: '提示',
+            Temperature: '温度',
+            Model: '模型',
+            'None Alt': '无',
+            'None State': '无'
         }
     }
 }

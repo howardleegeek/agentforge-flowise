@@ -6,6 +6,7 @@ import { enqueueSnackbar as enqueueSnackbarAction, closeSnackbar as closeSnackba
 // material-ui
 import { Typography, Box, Button, FormControl, ListItem, ListItemAvatar, ListItemText, MenuItem, Select } from '@mui/material'
 import { IconX } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
 // Project import
@@ -244,6 +245,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
 
     useNotifier()
     const theme = useTheme()
+    const { t } = useTranslation()
 
     const enqueueSnackbar = (...args) => dispatch(enqueueSnackbarAction(...args))
     const closeSnackbar = (...args) => dispatch(closeSnackbarAction(...args))
@@ -350,7 +352,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
     return (
         <>
             <Box fullWidth sx={{ mb: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Typography>Providers</Typography>
+                <Typography>{t('Providers')}</Typography>
                 <FormControl fullWidth>
                     <Select
                         size='small'
@@ -362,7 +364,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
                             }
                         }}
                     >
-                        <MenuItem value='none'>None</MenuItem>
+                        <MenuItem value='none'>{t('None')}</MenuItem>
                         {Object.values(speechToTextProviders).map((provider) => (
                             <MenuItem key={provider.name} value={provider.name}>
                                 {provider.label}
@@ -446,7 +448,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
                                     value={
                                         speechToText[selectedProvider]
                                             ? speechToText[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? false
+                                            : (inputParam.default ?? false)
                                     }
                                 />
                             )}
@@ -457,7 +459,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
                                     value={
                                         speechToText[selectedProvider]
                                             ? speechToText[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? ''
+                                            : (inputParam.default ?? '')
                                     }
                                 />
                             )}
@@ -470,7 +472,7 @@ const SpeechToText = ({ dialogProps, onConfirm }) => {
                                     value={
                                         speechToText[selectedProvider]
                                             ? speechToText[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? 'choose an option'
+                                            : (inputParam.default ?? 'choose an option')
                                     }
                                 />
                             )}
