@@ -90,6 +90,8 @@ const DispatchDashboard: React.FC = () => {
                 // ignore if no slots data
             }
             setNodes(normalized)
+            // Debug: log fetched nodes count for quick inspection
+            console.debug('DispatchDashboard: fetched nodes', normalized.length)
 
             // Tasks summary
             let queueCounts: any = { pending: 0, running: 0, completed: 0 }
@@ -105,6 +107,8 @@ const DispatchDashboard: React.FC = () => {
                 queueCounts = { pending: 0, running: 0, completed: 0 }
             }
             setTasks(queueCounts)
+            // Debug: log queue counts for quick inspection
+            console.debug('DispatchDashboard: queueCounts', queueCounts)
         } catch {
             setError('Failed to fetch dispatch data')
         } finally {
