@@ -796,7 +796,7 @@ const Marketplace = () => {
                                                     alt='WorkflowEmptySVG'
                                                 />
                                             </Box>
-                                            <div>No Marketplace Yet</div>
+                                            <div>{t('No Marketplace Yet')}</div>
                                         </Stack>
                                     )}
                             </TabPanel>
@@ -929,7 +929,7 @@ const Marketplace = () => {
                                                 alt='WorkflowEmptySVG'
                                             />
                                         </Box>
-                                        <div>No Saved Custom Templates</div>
+                                        <div>{t('No Saved Custom Templates')}</div>
                                     </Stack>
                                 )}
                             </TabPanel>

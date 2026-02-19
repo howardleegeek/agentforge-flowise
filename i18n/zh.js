@@ -43,6 +43,8 @@ export default {
         'Card View': '卡片视图',
         'List View': '列表视图',
         Inactive: '未激活',
-        'Search Name/Description/Node': '名称/描述/节点'
+        'Search Name/Description/Node': '名称/描述/节点',
+        'No Marketplace Yet': '尚无市场模板',
+        'No Saved Custom Templates': '暂无已保存的自定义模板'
     }
 }
