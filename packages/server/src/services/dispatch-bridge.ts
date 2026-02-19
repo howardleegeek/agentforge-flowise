@@ -1,30 +1,31 @@
 // Oyster Dispatch bridge for AgentForge server
-// Bridges Flowise chatflow execution to a Dispatch controller over HTTP
-// This bridge is optional and controlled by DISPATCH_ENABLED in the environment
-// and DISPATCH_CONTROLLER_URL pointing to the controller.
+// This bridge is optional and controlled by DISPATCH_ENABLED env var
+// It talks to the remote Dispatch controller over HTTP using built-in fetch
+// It converts Flowise chatflow executions into dispatch tasks and handles callbacks
 
-// Lightweight typing to avoid TS lib issues with global fetch in Node environments
-declare const fetch: any
-
-type CallbackPayload = { taskId: string; status?: string }
+export type DispatchCallback = {
+    taskId: string
+    status?: string
+    result?: any
+}
 
 export class DispatchBridge {
-    // Determine if the dispatch bridge is enabled via env var
+    private static controllerUrl: string = (process.env.DISPATCH_CONTROLLER_URL || '').trim()
+    private static enabled: boolean = (process.env.DISPATCH_ENABLED || 'false').toLowerCase() === 'true'
+    private static callbackStore: Map<string, any> = new Map()
+
     static isEnabled(): boolean {
-        const v = process.env.DISPATCH_ENABLED
-        return v === 'true' || v === '1'
+        return this.enabled && !!this.controllerUrl
     }
 
-    // Submit a chatflow/task to the dispatch controller
-    static async submitTask(chatflowId: string, input?: any): Promise<string> {
-        if (!this.isEnabled()) return ''
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL
-        if (!controllerUrl) {
-            throw new Error('DISPATCH_CONTROLLER_URL is not configured')
+    // Submit a chatflow/workflow as a dispatch task
+    static async submitTask(flowId: string, input?: any): Promise<string> {
+        if (!this.isEnabled()) {
+            throw new Error('DISPATCH_DISABLED')
         }
-        const url = controllerUrl.replace(/\/+$/, '') + '/submit'
-        const payload: any = {
-            chatflowId,
+        const url = `${this.controllerUrl.replace(/\/$/, '')}/tasks`
+        const payload = {
+            flowId,
             input
         }
         const res = await fetch(url, {
@@ -39,17 +40,17 @@ export class DispatchBridge {
             throw new Error(`Dispatch submit failed: ${res.status} ${text}`)
         }
         const data = await res.json()
-        return data?.taskId ?? ''
+        // Normalize to a string taskId
+        const taskId = String(data?.taskId ?? data?.id ?? '')
+        return taskId
     }
 
-    // Query status for a given taskId from the dispatch controller
+    // Get status of a submitted task
     static async getStatus(taskId: string): Promise<any> {
-        if (!this.isEnabled()) return { status: 'DISABLED' }
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL
-        if (!controllerUrl) {
-            throw new Error('DISPATCH_CONTROLLER_URL is not configured')
+        if (!this.isEnabled()) {
+            return { status: 'DISABLED' }
         }
-        const url = controllerUrl.replace(/\/+$/, '') + '/status/' + encodeURIComponent(taskId)
+        const url = `${this.controllerUrl.replace(/\/$/, '')}/tasks/${taskId}`
         const res = await fetch(url, { method: 'GET' })
         if (!res.ok) {
             const text = await res.text()
@@ -59,41 +60,33 @@ export class DispatchBridge {
         return data
     }
 
-    // List available nodes from the dispatch controller
-    static async getNodes(): Promise<any> {
-        if (!this.isEnabled()) return []
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL
-        if (!controllerUrl) {
-            throw new Error('DISPATCH_CONTROLLER_URL is not configured')
+    // List available computation nodes on the controller
+    static async getNodes(): Promise<string[]> {
+        if (!this.isEnabled()) {
+            return []
         }
-        const url = controllerUrl.replace(/\/+$/, '') + '/nodes'
+        const url = `${this.controllerUrl.replace(/\/$/, '')}/nodes`
         const res = await fetch(url, { method: 'GET' })
         if (!res.ok) {
             const text = await res.text()
-            throw new Error(`Dispatch nodes fetch failed: ${res.status} ${text}`)
+            throw new Error(`Dispatch nodes failed: ${res.status} ${text}`)
         }
         const data = await res.json()
-        // Normalize to an array if the controller wraps nodes
-        return data?.nodes ?? data
+        // Support { nodes: [...] } or a raw array
+        if (Array.isArray(data)) return data
+        if (Array.isArray((data as any)?.nodes)) return (data as any).nodes
+        return []
     }
 
-    // Callback from the controller when a task completes
-    static handleCallback(payload: CallbackPayload): void {
-        const { taskId, status } = payload
-        // Persist the callback in-memory for potential ingestion by Flowise later
-        this._callbacks.set(taskId, status ?? 'unknown')
-        // Note: In a real integration, you would propagate this back to the flow engine
-        // Here we simply store and log for visibility
-        try {
-            // eslint-disable-next-line no-console
-            console.log(`Dispatch bridge callback received: taskId=${taskId}, status=${status}`)
-        } catch {
-            // ignore logging failures
-        }
+    // Handle a completion callback from the controller
+    static handleCallback(callback: DispatchCallback): void {
+        const { taskId, status, result } = callback
+        if (!taskId) return
+        this.callbackStore.set(taskId, { status, result, timestamp: Date.now() })
     }
 
-    // Internal in-memory store for callback statuses
-    private static _callbacks: Map<string, string> = new Map()
+    // Optional helper to inspect a callback history (not required by API)
+    static getCallbackInfo(taskId: string): any {
+        return this.callbackStore.get(taskId)
+    }
 }
-
-export default DispatchBridge
