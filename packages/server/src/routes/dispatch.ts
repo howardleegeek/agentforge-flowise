@@ -7,17 +7,19 @@ router.use(express.json())
 
 // Submit a workflow to dispatch
 router.post('/submit', async (req: Request, res: Response) => {
-    // Rely on the bridge to determine if dispatch is enabled
-    if (!DispatchBridge.isEnabled()) {
-        return res.json({ ok: true, dispatched: false, reason: 'DISPATCH_DISABLED' })
-    }
     const { chatflowId, input } = req.body || {}
     if (!chatflowId) {
         return res.status(400).json({ error: 'chatflowId is required' })
     }
+    if (!DispatchBridge.isEnabled()) {
+        return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
+    }
     try {
-        const taskId = await DispatchBridge.submitTask(chatflowId, input)
-        res.json({ taskId })
+        const result = await DispatchBridge.submitTask(chatflowId, input)
+        if (typeof result === 'string') {
+            return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
+        }
+        res.json({ taskId: result.taskId, dispatched: true })
     } catch (e: any) {
         res.status(500).json({ error: String(e) })
     }
@@ -26,6 +28,9 @@ router.post('/submit', async (req: Request, res: Response) => {
 // Check dispatch task status
 router.get('/status/:taskId', async (req: Request, res: Response) => {
     const { taskId } = req.params
+    if (!DispatchBridge.isEnabled()) {
+        return res.json({ taskId, skipped: true, reason: 'DISPATCH_DISABLED' })
+    }
     try {
         const status = await DispatchBridge.getStatus(taskId)
         res.json({ taskId, status })
@@ -36,6 +41,9 @@ router.get('/status/:taskId', async (req: Request, res: Response) => {
 
 // List available dispatch nodes
 router.get('/nodes', async (_req: Request, res: Response) => {
+    if (!DispatchBridge.isEnabled()) {
+        return res.json({ nodes: [], skipped: true, reason: 'DISPATCH_DISABLED' })
+    }
     try {
         const nodes = await DispatchBridge.getNodes()
         res.json({ nodes })
