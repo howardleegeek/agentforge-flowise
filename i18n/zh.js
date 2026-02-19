@@ -10,6 +10,7 @@ export default {
         Marketplace: '市场',
         Search: '搜索',
         'Search nodes': '搜索节点',
+        'Search Workspaces': '搜索工作区',
         'Clear Search': '清除搜索',
         'Add Nodes': '添加节点',
         'What would you like to build?': '你想构建什么？',

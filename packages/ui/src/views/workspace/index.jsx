@@ -223,6 +223,7 @@ ShowWorkspaceRow.propTypes = {
 
 const Workspaces = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const theme = useTheme()
     const { confirm } = useConfirm()
     const currentUser = useSelector((state) => state.auth.user)
@@ -410,7 +411,7 @@ const Workspaces = () => {
                             onSearchChange={onSearchChange}
                             search={true}
                             title='Workspaces'
-                            searchPlaceholder='Search Workspaces'
+                            searchPlaceholder={t('Search Workspaces')}
                         >
                             <StyledPermissionButton
                                 permissionId={'workspace:create'}
