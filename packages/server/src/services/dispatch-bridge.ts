@@ -7,6 +7,10 @@ export default class DispatchBridge {
 
     constructor() {
         this.controllerUrl = (process.env.DISPATCH_CONTROLLER_URL || '').trim()
+        // Normalize controller URL: remove any trailing slash to avoid // when concatenating paths
+        if (this.controllerUrl.endsWith('/')) {
+            this.controllerUrl = this.controllerUrl.replace(/\/$/, '')
+        }
         // enable flag is a combination: enabled AND controller url provided
         const rawEnabled = (process.env.DISPATCH_ENABLED || 'false').toLowerCase()
         this.enabled = rawEnabled === 'true' || rawEnabled === '1'
