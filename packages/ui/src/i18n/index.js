@@ -86,4 +86,16 @@ i18n.init({
     console.error('i18n init failed', err)
 })
 
+export const SUPPORTED_LANGUAGES = ['zh', 'en']
+
+export const setLanguage = async (lng) => {
+    try {
+        if (typeof i18n?.changeLanguage === 'function') {
+            await i18n.changeLanguage(lng)
+        }
+    } catch (err) {
+        console.error('i18n setLanguage failed', err)
+    }
+}
+
 export default i18n
