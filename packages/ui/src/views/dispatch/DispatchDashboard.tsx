@@ -169,8 +169,8 @@ const DispatchDashboard: React.FC = () => {
             <Box sx={{ mt: 3 }}>
                 <Grid container spacing={2} aria-label='dispatch-node-grid' role='list'>
                     {nodes.map((n) => (
-                        <Grid item xs={12} sm={6} md={4} key={n.name}>
-                            <Card variant='outlined' aria-label={`node-${n.name}-card`}>
+                        <Grid item xs={12} sm={6} md={4} key={n.id ?? n.name ?? ''} aria-label={`node-${n.id ?? n.name ?? 'unknown'}-card`}>
+                            <Card variant='outlined' aria-label={`node-${n.id ?? n.name ?? 'unknown'}-card`}>
                                 {/* Provide fallbacks for missing data to improve resilience */}
                                 <CardHeader title={n.name || 'Unknown Node'} subheader={n.status || 'unknown'} />
                                 <CardContent>
