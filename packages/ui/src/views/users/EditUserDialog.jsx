@@ -25,18 +25,14 @@ import useNotifier from '@/utils/useNotifier'
 import { HIDE_CANVAS_DIALOG, SHOW_CANVAS_DIALOG } from '@/store/actions'
 import { enqueueSnackbar as enqueueSnackbarAction, closeSnackbar as closeSnackbarAction } from '@/store/actions'
 
-const statuses = [
-    {
-        label: 'Active',
-        name: 'active'
-    },
-    {
-        label: 'Inactive',
-        name: 'inactive'
-    }
-]
+import { useTranslation } from 'react-i18next'
 
 const EditUserDialog = ({ show, dialogProps, onCancel, onConfirm, setError }) => {
+    const { t } = useTranslation()
+    const statuses = [
+        { label: t('Active'), name: 'active' },
+        { label: t('Inactive'), name: 'inactive' }
+    ]
     const portalElement = document.getElementById('portal')
     const currentUser = useSelector((state) => state.auth.user)
 

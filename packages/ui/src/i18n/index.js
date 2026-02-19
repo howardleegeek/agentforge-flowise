@@ -63,6 +63,9 @@ const resources = {
             Logout: '退出登录',
             Login: '登录',
             NEW: '新',
+            Active: '活动中',
+            // UI/UX common status labels
+            // (added to improve Chinese UI consistency across dashboards)
             Framework: '框架'
         }
     }

@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import { useTranslation } from 'react-i18next'
 import * as PropTypes from 'prop-types'
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -60,6 +61,7 @@ import { workspaceSwitchSuccess } from '@/store/reducers/authSlice'
 import { Link } from 'react-router-dom'
 
 function ShowWorkspaceRow(props) {
+    const { t } = useTranslation()
     const customization = useSelector((state) => state.customization)
     const currentUser = useSelector((state) => state.auth.user)
     const [open, setOpen] = useState(false)
@@ -105,7 +107,7 @@ function ShowWorkspaceRow(props) {
                                 background: theme.palette.teal.main,
                                 color: 'white'
                             }}
-                            label={'Active'}
+                            label={t('Active')}
                         />
                     )}
                 </StyledTableCell>
