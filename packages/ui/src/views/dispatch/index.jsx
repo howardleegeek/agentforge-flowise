@@ -10,7 +10,7 @@ import { useError } from '@/store/context/ErrorContext'
 // NOTE: UI auto-refreshes data every 10 seconds (see REFRESH_INTERVAL_MS)
 // This DispatchDashboard is implemented per Task AF04: shows cluster nodes, slots usage, and task queue
 // Data is fetched from /api/v1/dispatch/* endpoints and auto-refreshed every 10s
-const DispatchDashboard = () => {
+export const DispatchDashboard = () => {
     // refresh interval in ms
     const REFRESH_INTERVAL_MS = 10000
     const { error } = useError()
