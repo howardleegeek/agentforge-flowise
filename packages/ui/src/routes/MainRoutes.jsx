@@ -31,6 +31,9 @@ const CustomAssistantConfigurePreview = Loadable(lazy(() => import('@/views/assi
 // credentials routing
 const Credentials = Loadable(lazy(() => import('@/views/credentials')))
 
+// dispatch routing
+const DispatchView = Loadable(lazy(() => import('@/views/dispatch')))
+
 // variables routing
 const Variables = Loadable(lazy(() => import('@/views/variables')))
 
@@ -165,6 +168,14 @@ const MainRoutes = {
             element: (
                 <RequireAuth permission={'credentials:view'}>
                     <Credentials />
+                </RequireAuth>
+            )
+        },
+        {
+            path: '/dispatch',
+            element: (
+                <RequireAuth permission={'dispatch:view'}>
+                    <DispatchView />
                 </RequireAuth>
             )
         },

@@ -148,6 +148,15 @@ const dashboard = {
                     permission: 'apikeys:view'
                 },
                 {
+                    id: 'dispatch',
+                    title: 'Dispatch',
+                    type: 'item',
+                    url: '/dispatch',
+                    icon: icons.IconClipboardList,
+                    breadcrumbs: true,
+                    permission: 'dispatch:view'
+                },
+                {
                     id: 'document-stores',
                     title: 'Document Stores',
                     type: 'item',
