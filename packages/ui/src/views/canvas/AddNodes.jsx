@@ -66,6 +66,8 @@ const translateCategory = (cat) => {
         'Chat Models': '聊天模型',
         'Text Splitters': '文本分割器',
         'Document Loaders': '文档加载器',
+        // Singular Agents category translation for Chinese UI
+        Agents: '智能体',
         Embeddings: '嵌入',
         'Vector Stores': '向量存储',
         'Record Manager': '记录管理',

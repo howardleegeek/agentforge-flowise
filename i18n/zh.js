@@ -4,6 +4,7 @@ export default {
         Providers: '提供者',
         Active: '活动',
         Settings: '设置',
+        Agents: '智能体',
         Upgrade: '升级',
         Workspaces: '工作区',
         Marketplace: '市场',

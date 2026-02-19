@@ -23,12 +23,13 @@ async function run() {
 
     const langLabel = i18n.t('Language')
     const providersLabel = i18n.t('Providers')
+    const agentsLabel = i18n.t('Agents')
 
-    if (langLabel === '语言' && providersLabel === '提供者') {
+    if (langLabel === '语言' && providersLabel === '提供者' && agentsLabel === '智能体') {
         console.log('PASS: Chinese translations loaded')
         process.exit(0)
     } else {
-        console.error('FAIL: Translations mismatch', { langLabel, providersLabel })
+        console.error('FAIL: Translations mismatch', { langLabel, providersLabel, agentsLabel })
         process.exit(1)
     }
 }
