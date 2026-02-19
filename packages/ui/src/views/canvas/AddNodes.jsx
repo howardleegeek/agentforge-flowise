@@ -85,6 +85,9 @@ const translateCategory = (cat) => {
         'Multi Agents': '多智能体',
         'Sequential Agents': '顺序智能体',
         // Workflow-related categories (ensure Chinese translations for UI)
+        // Some workflows-related categories that might appear in data
+        Workflow: '工作流',
+        'Workflow Builder': '工作流构建器',
         Chatflow: '聊天流程',
         // Explicit UI layout related labels
         'Card View': '卡片视图',
@@ -109,6 +112,21 @@ const blacklistForChatflowCanvas = {
 const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerated }) => {
     const theme = useTheme()
     const { t } = useTranslation()
+
+    // Simple local mapping to improve Chinese rendering for common node labels/descriptions
+    const nodeTextMap = {
+        Chatflow: '聊天流程',
+        AgentFlows: '代理流程',
+        New: '新增',
+        'Card View': '卡片视图',
+        'List View': '列表视图',
+        Workflow: '工作流',
+        'Workflow Builder': '工作流构建器'
+    }
+    const translateString = (str) => {
+        if (!str) return str
+        return nodeTextMap[str] ?? t(str, { defaultValue: str })
+    }
     const customization = useSelector((state) => state.customization)
     const dispatch = useDispatch()
 
@@ -754,11 +772,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                                                     alignItems: 'center'
                                                                                                 }}
                                                                                             >
-                                                                                                <span>
-                                                                                                    {t(node.label, {
-                                                                                                        defaultValue: node.label
-                                                                                                    })}
-                                                                                                </span>
+                                                                                                <span>{translateString(node.label)}</span>
                                                                                                 &nbsp;
                                                                                                 {node.badge && (
                                                                                                     <Chip
@@ -794,9 +808,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                                             )}
                                                                                         </>
                                                                                     }
-                                                                                    secondary={t(node.description, {
-                                                                                        defaultValue: node.description
-                                                                                    })}
+                                                                                    secondary={translateString(node.description)}
                                                                                 />
                                                                             </ListItem>
                                                                         </ListItemButton>
