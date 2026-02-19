@@ -1,12 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
+import { ListItem, ListItemButton, ListItemText } from '@mui/material'
 
-// Lightweight dispatch menu item. Renders as a router Link for SPA navigation.
+// Lightweight dispatch menu item.
+// Replaced plain Link with MUI ListItem pattern for a more polished look in the sidebar.
 export const DispatchMenuItem: React.FC = () => {
     return (
-        <Link to='/dispatch' style={{ display: 'block', padding: '8px 16px', textDecoration: 'none', color: 'inherit' }}>
-            Dispatch
-        </Link>
+        <ListItem disablePadding component={RouterLink} to='/dispatch'>
+            <ListItemButton>
+                <ListItemText primary='Dispatch' />
+            </ListItemButton>
+        </ListItem>
     )
 }
 
