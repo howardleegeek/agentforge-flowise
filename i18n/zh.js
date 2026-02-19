@@ -45,6 +45,9 @@ export default {
         Inactive: '未激活',
         'Search Name/Description/Node': '名称/描述/节点',
         'No Marketplace Yet': '尚无市场模板',
-        'No Saved Custom Templates': '暂无已保存的自定义模板'
+        'No Saved Custom Templates': '暂无已保存的自定义模板',
+        // Extra placeholders to help future UI strings localization
+        Agree: '同意',
+        Disagree: '不同意'
     }
 }
