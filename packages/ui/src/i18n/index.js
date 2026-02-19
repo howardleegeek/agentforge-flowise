@@ -39,6 +39,7 @@ const resources = {
             'Record Manager': '记录管理',
             Tools: '工具',
             'Tools (MCP)': '工具（MCP）',
+            'No Grading': '无评分',
             LangChain: '语言链',
             LlamaIndex: 'Llama 索引',
             AgentFlows: '代理流程',
