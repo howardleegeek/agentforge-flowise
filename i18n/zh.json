@@ -35,6 +35,7 @@
         "No Grading": "无评分",
         "LangChain": "语言链",
         "LlamaIndex": "Llama 索引",
+        "Agents": "智能体",
         "AgentFlows": "代理流程",
         "Multi Agents": "多智能体",
         "Sequential Agents": "顺序智能体",
