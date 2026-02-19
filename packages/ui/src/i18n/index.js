@@ -38,7 +38,7 @@ const resources = {
             Upgrade: '升级',
             Language: '语言',
             Chinese: '简体中文',
-            English: 'English',
+            English: '英语',
             AddNew: '新增',
             'Search Name or Category': '搜索名称或类别',
             Inactive: '未激活',

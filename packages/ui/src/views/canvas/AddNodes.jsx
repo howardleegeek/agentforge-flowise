@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, memo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -69,7 +70,13 @@ const translateCategory = (cat) => {
         'Vector Stores': '向量存储',
         'Record Manager': '记录管理',
         Tools: '工具',
-        'Tools (MCP)': '工具（MCP）'
+        'Tools (MCP)': '工具（MCP）',
+        // Additional categories for Chinese UI
+        Memory: '内存',
+        Utilities: '实用工具',
+        'Agent Flows': '代理流程',
+        'Multi Agents': '多智能体',
+        'Sequential Agents': '顺序智能体'
     }
     return map[cat] ?? cat
 }
@@ -87,6 +94,7 @@ const blacklistForChatflowCanvas = {
 
 const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerated }) => {
     const theme = useTheme()
+    const { t } = useTranslation()
     const customization = useSelector((state) => state.customization)
     const dispatch = useDispatch()
 
@@ -733,7 +741,11 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                                                     alignItems: 'center'
                                                                                                 }}
                                                                                             >
-                                                                                                <span>{node.label}</span>
+                                                                                                <span>
+                                                                                                    {t(node.label, {
+                                                                                                        defaultValue: node.label
+                                                                                                    })}
+                                                                                                </span>
                                                                                                 &nbsp;
                                                                                                 {node.badge && (
                                                                                                     <Chip
@@ -769,7 +781,9 @@ const AddNodes = ({ nodesData, node, isAgentCanvas, isAgentflowv2, onFlowGenerat
                                                                                             )}
                                                                                         </>
                                                                                     }
-                                                                                    secondary={node.description}
+                                                                                    secondary={t(node.description, {
+                                                                                        defaultValue: node.description
+                                                                                    })}
                                                                                 />
                                                                             </ListItem>
                                                                         </ListItemButton>
