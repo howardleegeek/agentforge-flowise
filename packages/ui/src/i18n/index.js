@@ -3,6 +3,7 @@ import i18next from 'i18next'
 // Minimal i18n instance for tests and runtime without React bindings.
 const resources = {
     zh: {
+        // Default language is Chinese for this UI instance
         translation: {
             Language: '语言',
             Providers: '提供者',
