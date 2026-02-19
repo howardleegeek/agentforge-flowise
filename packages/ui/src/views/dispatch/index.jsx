@@ -28,12 +28,13 @@ const DispatchDashboard = () => {
             ])
             setNodes(nodesRes?.data?.data || [])
             setSlots(slotsRes?.data?.data || [])
-            // Normalize queue data: expect counts per status
-            const q = queueRes?.data?.data?.counts || {}
+            // Normalize queue data: support different possible shapes for robustness
+            // Some APIs may return counts under data.counts, others under data.data.counts, etc.
+            const rawCounts = queueRes?.data?.data?.counts ?? queueRes?.data?.counts ?? {}
             setQueue({
-                pending: q.pending || 0,
-                running: q.running || 0,
-                completed: q.completed || 0
+                pending: rawCounts?.pending ?? 0,
+                running: rawCounts?.running ?? 0,
+                completed: rawCounts?.completed ?? 0
             })
             setLoading(false)
         } catch (e) {
