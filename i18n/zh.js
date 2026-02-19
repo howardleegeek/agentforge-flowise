@@ -1,4 +1,5 @@
 export default {
+// Chinese translations for i18n (简体中文)
         translation: {
         Language: '语言',
         Category: '类别',
