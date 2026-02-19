@@ -47,7 +47,6 @@ const resources = {
             AgentFlows: 'Agent Flows',
             'Multi Agents': 'Multi Agents',
             'Sequential Agents': 'Sequential Agents',
-            Marketplace: 'Marketplace',
             'Explore and use pre-built templates': 'Explore and use pre-built templates',
             // Additional UI strings that are used in the app but were
             // missing from the Chinese translations. Providing translations
