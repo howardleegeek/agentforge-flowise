@@ -8,8 +8,9 @@ import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } 
 import apiDispatch from '@/api/dispatch'
 
 type NodeInfo = {
-    name: string
-    status: string
+    id?: string
+    name?: string
+    status?: string
     slotsUsed?: number
     slotsTotal?: number
 }
@@ -43,12 +44,17 @@ const DispatchDashboard: React.FC = () => {
                 const nodesResp: any = await apiDispatch.getNodes({})
                 const data = nodesResp?.data?.data ?? nodesResp?.data ?? []
                 normalized = Array.isArray(data)
-                    ? data.map((n) => ({
-                          name: (n?.name ?? '') as string,
-                          status: (n?.status ?? 'unknown') as string,
-                          slotsUsed: n?.slotsUsed ?? n?.slots ?? 0,
-                          slotsTotal: n?.slotsTotal ?? n?.slotsCap ?? 0
-                      }))
+                    ? data.map((n) => {
+                          const id = (n?.id ?? n?.name ?? '') as string
+                          const displayName = n?.name ?? id ?? ''
+                          return {
+                              id,
+                              name: displayName,
+                              status: (n?.status ?? 'unknown') as string,
+                              slotsUsed: n?.slotsUsed ?? n?.slots ?? 0,
+                              slotsTotal: n?.slotsTotal ?? n?.slotsCap ?? 0
+                          }
+                      })
                     : []
             } catch {
                 normalized = []
@@ -65,11 +71,14 @@ const DispatchDashboard: React.FC = () => {
                         total: s?.total ?? 0
                     }
                 })
-                normalized = normalized.map((n) => ({
-                    ...n,
-                    slotsUsed: byNode[n.name]?.used ?? n.slotsUsed,
-                    slotsTotal: byNode[n.name]?.total ?? n.slotsTotal
-                }))
+                normalized = normalized.map((n) => {
+                    const key = n?.id ?? n?.name ?? ''
+                    return {
+                        ...n,
+                        slotsUsed: byNode[key]?.used ?? n.slotsUsed,
+                        slotsTotal: byNode[key]?.total ?? n.slotsTotal
+                    }
+                })
             } catch {
                 // ignore if no slots data
             }
