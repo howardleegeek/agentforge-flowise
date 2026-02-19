@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
@@ -46,6 +47,7 @@ export interface AddNodesDrawerProps {
  * Add Nodes Drawer - Slide-out panel with draggable nodes
  */
 function AddNodesDrawerComponent({ nodes, onDragStart, onNodeClick }: AddNodesDrawerProps) {
+    const { t } = useTranslation()
     const theme = useTheme()
     const { apiBaseUrl } = useApiContext()
     const { isDarkMode: _isDarkMode } = useConfigContext()
@@ -202,14 +204,14 @@ function AddNodesDrawerComponent({ nodes, onDragStart, onNodeClick }: AddNodesDr
                                 >
                                     <Box sx={{ p: 2 }}>
                                         <Stack>
-                                            <Typography variant='h4'>Add Nodes</Typography>
+                                            <Typography variant='h4'>{t('Add Nodes')}</Typography>
                                         </Stack>
                                         <OutlinedInput
                                             sx={{ width: '100%', pr: 2, pl: 2, my: 2 }}
                                             id='input-search-node'
                                             value={searchValue}
                                             onChange={handleSearchChange}
-                                            placeholder='Search nodes'
+                                            placeholder={t('Search nodes')}
                                             startAdornment={
                                                 <InputAdornment position='start'>
                                                     <IconSearch stroke={1.5} size='1rem' color={theme.palette.grey[500]} />
@@ -227,7 +229,7 @@ function AddNodesDrawerComponent({ nodes, onDragStart, onNodeClick }: AddNodesDr
                                                             }
                                                         }}
                                                         onClick={handleClearSearch}
-                                                        title='Clear Search'
+                                                        title={t('Clear Search')}
                                                     >
                                                         <IconX stroke={1.5} size='1rem' />
                                                     </InputAdornment>
@@ -280,7 +282,7 @@ function AddNodesDrawerComponent({ nodes, onDragStart, onNodeClick }: AddNodesDr
                                                                 aria-controls={`nodes-accordian-${category}`}
                                                                 id={`nodes-accordian-header-${category}`}
                                                             >
-                                                                <Typography variant='h5'>{category}</Typography>
+                                                                <Typography variant='h5'>{t(category)}</Typography>
                                                             </AccordionSummary>
                                                             <AccordionDetails sx={{ p: 0 }}>
                                                                 {filteredNodes[category].map((node, index) => (
