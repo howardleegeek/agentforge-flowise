@@ -44,6 +44,12 @@ export default {
         'List View': '列表视图',
         Inactive: '未激活',
         'Search Name/Description/Node': '名称/描述/节点',
+        Inputs: '输入',
+        Output: '输出',
+        'Additional Parameters': '附加参数',
+        'Use Template': '使用模板',
+        'Multi Agents': '多智能体',
+        'Sequential Agents': '顺序智能体',
         'No Marketplace Yet': '尚无市场模板',
         'No Saved Custom Templates': '暂无已保存的自定义模板',
         // Extra placeholders to help future UI strings localization

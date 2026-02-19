@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import { Box, Typography, Divider, Button } from '@mui/material'
 
 // project imports
@@ -32,6 +33,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 // ===========================|| CANVAS NODE ||=========================== //
 
 const MarketplaceCanvasNode = ({ data }) => {
+    const { t } = useTranslation()
     const theme = useTheme()
 
     const [showDialog, setShowDialog] = useState(false)
@@ -116,7 +118,7 @@ const MarketplaceCanvasNode = ({ data }) => {
                                         textAlign: 'center'
                                     }}
                                 >
-                                    Inputs
+                                    {t('Inputs')}
                                 </Typography>
                             </Box>
                             <Divider />
@@ -142,7 +144,7 @@ const MarketplaceCanvasNode = ({ data }) => {
                             }}
                         >
                             <Button sx={{ borderRadius: 25, width: '90%', mb: 2 }} variant='outlined' onClick={onDialogClicked}>
-                                Additional Parameters
+                                {t('Additional Parameters')}
                             </Button>
                         </div>
                     )}
@@ -154,7 +156,7 @@ const MarketplaceCanvasNode = ({ data }) => {
                                 textAlign: 'center'
                             }}
                         >
-                            Output
+                            {t('Output')}
                         </Typography>
                     </Box>
                     <Divider />

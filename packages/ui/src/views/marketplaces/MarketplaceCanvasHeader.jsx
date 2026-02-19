@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 // material-ui
 import { useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import { Avatar, Box, ButtonBase, Typography, Stack } from '@mui/material'
 import { StyledButton } from '@/ui-component/button/StyledButton'
 
@@ -13,6 +14,7 @@ import { Available } from '@/ui-component/rbac/available'
 // ==============================|| CANVAS HEADER ||============================== //
 
 const MarketplaceCanvasHeader = ({ flowName, flowData, onChatflowCopy }) => {
+    const { t } = useTranslation()
     const theme = useTheme()
     const navigate = useNavigate()
 
@@ -62,7 +64,7 @@ const MarketplaceCanvasHeader = ({ flowName, flowData, onChatflowCopy }) => {
                         onClick={() => onChatflowCopy(flowData)}
                         startIcon={<IconCopy />}
                     >
-                        Use Template
+                        {t('Use Template')}
                     </StyledButton>
                 </Box>
             </Available>
