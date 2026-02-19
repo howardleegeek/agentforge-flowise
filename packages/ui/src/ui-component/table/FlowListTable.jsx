@@ -23,6 +23,7 @@ import {
 import { tableCellClasses } from '@mui/material/TableCell'
 import FlowListMenu from '../button/FlowListMenu'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/hooks/useAuth'
 
 import MoreItemsTooltip from '../tooltip/MoreItemsTooltip'
@@ -64,6 +65,7 @@ export const FlowListTable = ({
     pageLimit
 }) => {
     const { hasPermission } = useAuth()
+    const { t } = useTranslation()
     const isActionsAvailable = isAgentCanvas
         ? hasPermission('agentflows:update,agentflows:delete,agentflows:config,agentflows:domains,templates:flowexport,agentflows:export')
         : hasPermission('chatflows:update,chatflows:delete,chatflows:config,chatflows:domains,templates:flowexport,chatflows:export')
@@ -119,14 +121,14 @@ export const FlowListTable = ({
                         <TableRow>
                             <StyledTableCell component='th' scope='row' style={{ width: '20%' }} key='0'>
                                 <TableSortLabel active={orderBy === 'name'} direction={order} onClick={() => handleRequestSort('name')}>
-                                    Name
+                                    {t('Name')}
                                 </TableSortLabel>
                             </StyledTableCell>
                             <StyledTableCell style={{ width: '25%' }} key='1'>
-                                Category
+                                {t('Category')}
                             </StyledTableCell>
                             <StyledTableCell style={{ width: '30%' }} key='2'>
-                                Nodes
+                                {t('Nodes')}
                             </StyledTableCell>
                             <StyledTableCell style={{ width: '15%' }} key='3'>
                                 <TableSortLabel
@@ -134,12 +136,12 @@ export const FlowListTable = ({
                                     direction={order}
                                     onClick={() => handleRequestSort('updatedDate')}
                                 >
-                                    Last Modified Date
+                                    {t('Last Modified Date')}
                                 </TableSortLabel>
                             </StyledTableCell>
                             {isActionsAvailable && (
                                 <StyledTableCell style={{ width: '10%' }} key='4'>
-                                    Actions
+                                    {t('Actions')}
                                 </StyledTableCell>
                             )}
                         </TableRow>

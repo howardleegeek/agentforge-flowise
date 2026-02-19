@@ -25,6 +25,10 @@ const resources = {
             Language: 'Language',
             // Add missing English keys to keep parity with Chinese translations
             'Search Name/Description/Node': 'Search Name/Description/Node',
+            Category: 'Category',
+            Nodes: 'Nodes',
+            'Last Modified Date': 'Last Modified Date',
+            Actions: 'Actions',
             NEW: 'New',
             Chinese: 'Chinese',
             English: 'English',

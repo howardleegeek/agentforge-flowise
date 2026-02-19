@@ -1,6 +1,10 @@
 export default {
-    translation: {
+        translation: {
         Language: '语言',
+        Category: '类别',
+        Nodes: '节点',
+        'Last Modified Date': '最近修改日期',
+        Actions: '操作',
         Providers: '提供者',
         Active: '活动',
         Settings: '设置',
