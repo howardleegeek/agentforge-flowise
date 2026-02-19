@@ -1,85 +1,141 @@
-// Ensure fetch is visible for environments without DOM lib typings
-declare const fetch: any
+// Dispatch bridge for AgentForge server
+// - Bridges Flowise chatflow execution to the Dispatch controller via HTTP
+// - Exposes simple in-memory task tracking and a callback updater
+// - Optional: when DISPATCH_ENABLED is false, all operations become no-ops
 
-export default class DispatchBridge {
-    private controllerUrl: string
-    private enabled: boolean
+type TaskStatus = 'pending' | 'running' | 'completed' | 'failed' | string
 
-    constructor() {
-        this.controllerUrl = (process.env.DISPATCH_CONTROLLER_URL || '').trim()
-        // Normalize controller URL: remove any trailing slash to avoid // when concatenating paths
-        if (this.controllerUrl.endsWith('/')) {
-            this.controllerUrl = this.controllerUrl.replace(/\/$/, '')
-        }
-        // enable flag is a combination: enabled AND controller url provided
-        const rawEnabled = (process.env.DISPATCH_ENABLED || 'false').toLowerCase()
-        this.enabled = rawEnabled === 'true' || rawEnabled === '1'
+interface InternalTask {
+    taskId: string
+    chatflowId: string
+    input: any
+    status: TaskStatus
+}
+
+// Simple in-memory store of tasks when dispatch is enabled
+class DispatchBridge {
+    private static _enabled: boolean = ((): boolean => {
+        const v = process.env.DISPATCH_ENABLED
+        return v === 'true' || v === '1'
+    })()
+
+    private static _controllerUrl: string = ((): string => {
+        return (process.env.DISPATCH_CONTROLLER_URL || '').trim()
+    })()
+
+    private static _tasks: Map<string, InternalTask> = new Map()
+
+    /** Public helpers used by routes */
+    static isEnabled(): boolean {
+        return this._enabled && this._controllerUrl.length > 0
     }
 
-    public isEnabled(): boolean {
-        // Bridge is usable only when explicitly enabled and URL is configured
-        return this.enabled && this.controllerUrl.length > 0
-    }
-
-    private async postJson(path: string, body: any): Promise<any> {
-        if (!this.isEnabled()) {
-            return null
-        }
-        try {
-            const res = await fetch(`${this.controllerUrl}${path}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
+    // Submit a task to the dispatch controller. Returns a taskId.
+    static async submitTask(chatflowId: string, input: any): Promise<string> {
+        // If disabled, simulate a skipped task
+        if (!this._enabled || this._controllerUrl.length === 0) {
+            const taskId = `dispatch-skip-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+            this._tasks.set(taskId, {
+                taskId,
+                chatflowId,
+                input,
+                status: 'completed'
             })
-            if (!res.ok) {
-                // Return null to indicate not dispatched
-                return null
-            }
-            return await res.json()
-        } catch (e) {
-            // swallow and signal not available
-            return null
+            return taskId
         }
+
+        const payload = {
+            chatflowId,
+            input,
+            callbackUrl: process.env.DISPATCH_CALLBACK_URL || ''
+        }
+
+        const res: any = await this._postJson(`${this._controllerUrl.replace(/\/$/, '')}/submit`, payload)
+        const taskId = (res && res.taskId) || `dispatch-${Date.now()}`
+        this._tasks.set(taskId, {
+            taskId,
+            chatflowId,
+            input,
+            status: 'running'
+        })
+        return taskId
     }
 
-    private async getJson(path: string): Promise<any> {
-        if (!this.isEnabled()) {
-            return null
+    static async getStatus(taskId: string): Promise<string> {
+        const t = this._tasks.get(taskId)
+        if (!t) return 'unknown'
+        if (t.status === 'completed' || t.status === 'failed') return t.status
+        // Try to poll controller for updated status
+        if (this._enabled && this._controllerUrl) {
+            try {
+                const res: any = await this._getJson(`${this._controllerUrl.replace(/\/$/, '')}/status/${taskId}`)
+                const status = (res && res.status) || t.status
+                t.status = status
+                return t.status
+            } catch {
+                // ignore and keep local status
+            }
         }
-        try {
-            const res = await fetch(`${this.controllerUrl}${path}`, {
-                method: 'GET'
+        return t.status
+    }
+
+    static updateStatus(taskId: string, status: string): void {
+        const t = this._tasks.get(taskId)
+        if (t) {
+            t.status = status as TaskStatus
+        } else {
+            // Unknown task, create a minimal record to reflect status
+            this._tasks.set(taskId, {
+                taskId,
+                chatflowId: '',
+                input: null,
+                status: status as TaskStatus
             })
-            if (!res.ok) {
-                return null
-            }
+        }
+    }
+
+    static async getNodes(): Promise<any> {
+        if (!this._enabled || this._controllerUrl.length === 0) return []
+        try {
+            const res = await this._getJson(`${this._controllerUrl.replace(/\/$/, '')}/nodes`)
+            return res
+        } catch {
+            return []
+        }
+    }
+
+    // Callback updater (called by the route)
+    static handleCallback(payload: { taskId: string; status: string }): void {
+        if (!payload?.taskId) return
+        this.updateStatus(payload.taskId, payload.status)
+    }
+
+    // Internal helpers
+    private static async _postJson(url: string, body: any): Promise<any> {
+        const fetchFn: any = (globalThis as any).fetch
+        if (!fetchFn) return {}
+        const res = await fetchFn(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        try {
             return await res.json()
-        } catch (e) {
-            return null
+        } catch {
+            return {}
         }
     }
 
-    // Submit a chatflow/workflow to dispatch controller
-    async submit(chatflowId: string, input?: any, flowName?: string): Promise<{ taskId: string } | null> {
-        const payload: any = { chatflowId }
-        if (input !== undefined) payload.input = input
-        if (flowName) payload.flowName = flowName
-        const result = await this.postJson('/submit', payload)
-        if (result && result.taskId) {
-            return { taskId: String(result.taskId) }
+    private static async _getJson(url: string): Promise<any> {
+        const fetchFn: any = (globalThis as any).fetch
+        if (!fetchFn) return {}
+        const res = await fetchFn(url, { method: 'GET' })
+        try {
+            return await res.json()
+        } catch {
+            return {}
         }
-        return null
-    }
-
-    // Query status of a dispatched task
-    async status(taskId: string): Promise<any> {
-        const data = await this.getJson(`/status/${encodeURIComponent(taskId)}`)
-        return data
-    }
-
-    // List available dispatch nodes
-    async nodes(): Promise<any> {
-        const data = await this.getJson('/nodes')
-        return data
     }
 }
+
+export { DispatchBridge }
