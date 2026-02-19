@@ -71,6 +71,7 @@
         "Delete Chatflow": "删除聊天流程",
         "Agent Flows": "代理流程",
         "Multi Agents": "多智能体",
-        "Sequential Agents": "顺序智能体"
+        "Sequential Agents": "顺序智能体",
+        "AddNew": "新增"
     }
 }

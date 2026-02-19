@@ -80,6 +80,7 @@ export default {
         'Card View': '卡片视图',
         'List View': '列表视图',
         'Multi Agents': '多智能体',
-        'Sequential Agents': '顺序智能体'
+        'Sequential Agents': '顺序智能体',
+        AddNew: '新增'
     }
 }
