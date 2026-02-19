@@ -77,10 +77,6 @@ export default {
         'Delete Chatflow': '删除聊天流程',
         'Explore and use pre-built templates': '探索并使用预构建模板',
         'Agent Flows': '代理流程',
-        'Card View': '卡片视图',
-        'List View': '列表视图',
-        'Multi Agents': '多智能体',
-        'Sequential Agents': '顺序智能体',
         AddNew: '新增'
     }
 }
