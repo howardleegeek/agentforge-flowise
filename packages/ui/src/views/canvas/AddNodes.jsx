@@ -63,6 +63,7 @@ const agentMemoryNodes = ['agentMemory', 'sqliteAgentMemory', 'postgresAgentMemo
 // Simple category translator for Chinese UI
 const translateCategory = (cat) => {
     const map = {
+        // Core node categories with Chinese translations
         'Chat Models': '聊天模型',
         'Text Splitters': '文本分割器',
         'Document Loaders': '文档加载器',
@@ -82,7 +83,14 @@ const translateCategory = (cat) => {
         LlamaIndex: 'Llama 索引',
         'Agent Flows': '代理流程',
         'Multi Agents': '多智能体',
-        'Sequential Agents': '顺序智能体'
+        'Sequential Agents': '顺序智能体',
+        // Workflow-related categories (ensure Chinese translations for UI)
+        Chatflow: '聊天流程',
+        // Explicit UI layout related labels
+        'Card View': '卡片视图',
+        'List View': '列表视图',
+        // Status-like category label
+        Inactive: '未激活'
     }
     return map[cat] ?? cat
 }
