@@ -121,7 +121,8 @@ const DispatchDashboard: React.FC = () => {
                     {nodes.map((n) => (
                         <Grid item xs={12} sm={6} md={4} key={n.name}>
                             <Card variant='outlined'>
-                                <CardHeader title={n.name} subheader={n.status} />
+                                {/* Provide fallbacks for missing data to improve resilience */}
+                                <CardHeader title={n.name || 'Unknown Node'} subheader={n.status || 'unknown'} />
                                 <CardContent>
                                     <Typography variant='body2' gutterBottom>
                                         Slots: {n.slotsUsed ?? 0}/{n.slotsTotal ?? 0}
