@@ -1,64 +1,12 @@
 import i18next from 'i18next'
 
+// Load Chinese translations from a separate module to simplify maintenance
+// and to avoid JSON import pitfalls in some runtimes.
+import zh from '../../../../i18n/zh.js'
+
 // Minimal i18n instance for tests and runtime without React bindings.
 const resources = {
-    zh: {
-        // Default language is Chinese for this UI instance
-        translation: {
-            Language: '语言',
-            Providers: '提供者',
-            Active: '活动',
-            Settings: '设置',
-            // Global UI keys commonly used across the app
-            Upgrade: '升级',
-            Workspaces: '工作区',
-            Marketplace: '市场',
-            Search: '搜索',
-            'Search nodes': '搜索节点',
-            'Clear Search': '清除搜索',
-            'Add Nodes': '添加节点',
-            'What would you like to build?': '你想构建什么？',
-            'Agentflow generation description': 'Agentflow 生成描述',
-            Chinese: '简体中文',
-            English: '英文',
-            // Common form / button labels
-            Cancel: '取消',
-            Save: '保存',
-            Delete: '删除',
-            Edit: '编辑',
-            Users: '用户',
-            Last: '最近',
-            LastUpdated: '最近更新',
-            Name: '名称',
-            Description: '描述',
-            // Node / workflow builder related keys
-            'Chat Models': '聊天模型',
-            'Text Splitters': '文本分割器',
-            'Document Loaders': '文档加载器',
-            Embeddings: '嵌入',
-            'Vector Stores': '向量存储',
-            'Record Manager': '记录管理',
-            Tools: '工具',
-            'Tools (MCP)': '工具（MCP）',
-            'No Grading': '无评分',
-            LangChain: '语言链',
-            LlamaIndex: 'Llama 索引',
-            AgentFlows: '代理流程',
-            'Multi Agents': '多智能体',
-            'Sequential Agents': '顺序智能体',
-            // Misc
-            'Explore and use pre-built templates': '探索并使用预构建模板',
-            'Agent Flows': '代理流程',
-            // Additional UI strings that are used in the app but were
-            // missing from the Chinese translations. Providing translations
-            // here helps ensure the UI remains fully localized when the
-            // language is switched to Chinese.
-            'Card View': '卡片视图',
-            'List View': '列表视图',
-            Inactive: '未激活',
-            'Search Name/Description/Node': '名称/描述/节点'
-        }
-    },
+    zh: zh,
     en: {
         translation: {
             Providers: 'Providers',
@@ -100,7 +48,15 @@ const resources = {
             'Multi Agents': 'Multi Agents',
             'Sequential Agents': 'Sequential Agents',
             Marketplace: 'Marketplace',
-            'Explore and use pre-built templates': 'Explore and use pre-built templates'
+            'Explore and use pre-built templates': 'Explore and use pre-built templates',
+            // Additional UI strings that are used in the app but were
+            // missing from the Chinese translations. Providing translations
+            // here helps ensure the UI remains fully localized when the
+            // language is switched to Chinese.
+            'Card View': 'Card View',
+            'List View': 'List View',
+            Inactive: 'Inactive',
+            'Search Name/Description/Node': 'Search Name/Description/Node'
         }
     }
 }
