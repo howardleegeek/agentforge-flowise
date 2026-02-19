@@ -40,6 +40,16 @@ class DispatchBridge {
         return taskId ? { taskId } : null
     }
 
+    // Compatibility wrapper: expose status() same as getStatus()
+    static async status(taskId: string): Promise<string> {
+        return this.getStatus(taskId)
+    }
+
+    // Compatibility wrapper: expose nodes() that delegates to getNodes()
+    static async nodes(): Promise<any> {
+        return this.getNodes()
+    }
+
     // Submit a task to the dispatch controller. Returns a taskId.
     static async submitTask(chatflowId: string, input: any): Promise<string> {
         // If disabled, simulate a skipped task

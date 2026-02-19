@@ -44,6 +44,17 @@ router.get('/status/:taskId', async (req: Request, res: Response) => {
     }
 })
 
+// POST /api/v1/dispatch/callback — 由 controller 回调更新任务状态
+router.post('/callback', (req: Request, res: Response) => {
+    const payload = req.body as { taskId?: string; status?: string }
+    try {
+        DispatchBridge.handleCallback(payload as any)
+        res.json({ ok: true })
+    } catch (err: any) {
+        res.status(500).json({ error: err?.message ?? 'callback handling error' })
+    }
+})
+
 // GET /api/v1/dispatch/nodes — 查看可用节点
 router.get('/nodes', async (_req: Request, res: Response) => {
     try {
