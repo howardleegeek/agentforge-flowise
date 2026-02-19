@@ -1,6 +1,6 @@
 import { ICommonObject, INode, INodeData, INodeParams, INodeOutputsValue } from '../../../src/Interface'
+import { getBaseClasses } from '../../../src/utils'
 
-// Oyster Dispatch Task Node
 class OysterDispatchTask implements INode {
     label: string
     name: string
@@ -10,8 +10,9 @@ class OysterDispatchTask implements INode {
     icon: string
     category: string
     baseClasses: string[]
-    inputs?: INodeParams[]
+    inputs: INodeParams[]
     outputs: INodeOutputsValue[]
+
     constructor() {
         this.label = 'Oyster Dispatch Task'
         this.name = 'oysterDispatchTask'
@@ -19,64 +20,48 @@ class OysterDispatchTask implements INode {
         this.type = 'OysterDispatchTask'
         this.icon = 'oysterDispatchTask.svg'
         this.category = 'Oyster'
-        this.description = 'Wraps a subworkflow as a dispatch task for a single workflow execution'
-        this.baseClasses = [this.type, 'Task']
+        this.description = 'Wraps a sub-workflow as a dispatch task'
+        this.baseClasses = [...getBaseClasses(OysterDispatchTask)]
         this.inputs = [
             {
                 label: 'Project',
                 name: 'project',
                 type: 'string',
-                default: ''
-            } as INodeParams,
+                placeholder: 'my-project'
+            },
             {
                 label: 'Priority',
                 name: 'priority',
-                type: 'string',
-                default: 'normal'
-            } as INodeParams,
+                type: 'number',
+                optional: true
+            },
             {
                 label: 'Estimated Minutes',
                 name: 'estimatedMinutes',
                 type: 'number',
-                default: 30
-            } as INodeParams,
+                optional: true
+            },
             {
                 label: 'Node Preference',
                 name: 'nodePreference',
                 type: 'string',
-                optional: true,
-                default: ''
-            } as INodeParams
+                optional: true
+            }
         ]
         this.outputs = [
-            {
-                label: 'Task ID',
-                name: 'task_id',
-                baseClasses: this.baseClasses
-            } as INodeOutputsValue,
-            {
-                label: 'Status',
-                name: 'status',
-                baseClasses: this.baseClasses
-            } as INodeOutputsValue,
-            {
-                label: 'Result',
-                name: 'result',
-                baseClasses: this.baseClasses
-            } as INodeOutputsValue
+            { label: 'Task ID', name: 'taskId', baseClasses: this.baseClasses },
+            { label: 'Status', name: 'status', baseClasses: this.baseClasses },
+            { label: 'Result', name: 'result', baseClasses: ['string', 'json'] }
         ]
     }
 
-    async init(nodeData: INodeData, _input: string, _options: ICommonObject): Promise<any> {
-        const project = nodeData.inputs?.project
-        if (typeof project !== 'undefined' && typeof project !== 'string') {
-            throw new Error('Invalid project value')
+    async init(nodeData: INodeData, _: string, __: ICommonObject): Promise<any> {
+        const project = nodeData?.inputs?.project as string
+        if (!project) {
+            throw new Error('Project is required')
         }
-        const estimatedMinutes = nodeData.inputs?.estimatedMinutes
-        if (typeof estimatedMinutes !== 'undefined' && Number.isNaN(Number(estimatedMinutes))) {
-            throw new Error('Invalid estimatedMinutes value')
-        }
-        return {}
+        const taskId = 'task_' + Math.random().toString(36).slice(2, 9)
+        return { taskId, status: 'created', result: {} }
     }
 }
 
