@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 // material-ui
@@ -31,6 +32,7 @@ import { DocumentStoreTable } from '@/ui-component/table/DocumentStoreTable'
 
 const Documents = () => {
     const theme = useTheme()
+    const { t } = useTranslation()
 
     const navigate = useNavigate()
     const getAllDocumentStores = useApi(documentsApi.getAllDocumentStores)
@@ -174,7 +176,7 @@ const Documents = () => {
                                     }}
                                     variant='contained'
                                     value='card'
-                                    title='Card View'
+                                    title={t('Card View')}
                                 >
                                     <IconLayoutGrid />
                                 </ToggleButton>
@@ -186,7 +188,7 @@ const Documents = () => {
                                     }}
                                     variant='contained'
                                     value='list'
-                                    title='List View'
+                                    title={t('List View')}
                                 >
                                     <IconList />
                                 </ToggleButton>

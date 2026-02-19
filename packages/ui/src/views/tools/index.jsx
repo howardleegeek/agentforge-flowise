@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // material-ui
 import { Box, Stack, ButtonGroup, Skeleton, ToggleButtonGroup, ToggleButton } from '@mui/material'
@@ -30,6 +31,7 @@ import ToolEmptySVG from '@/assets/images/tools_empty.svg'
 
 const Tools = () => {
     const theme = useTheme()
+    const { t } = useTranslation()
     const getAllToolsApi = useApi(toolsApi.getAllTools)
     const { error, setError } = useError()
 
@@ -181,7 +183,7 @@ const Tools = () => {
                                     }}
                                     variant='contained'
                                     value='card'
-                                    title='Card View'
+                                    title={t('Card View')}
                                 >
                                     <IconLayoutGrid />
                                 </ToggleButton>
@@ -193,7 +195,7 @@ const Tools = () => {
                                     }}
                                     variant='contained'
                                     value='list'
-                                    title='List View'
+                                    title={t('List View')}
                                 >
                                     <IconList />
                                 </ToggleButton>

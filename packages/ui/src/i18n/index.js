@@ -47,7 +47,15 @@ const resources = {
             'Sequential Agents': '顺序智能体',
             // Misc
             'Explore and use pre-built templates': '探索并使用预构建模板',
-            'Agent Flows': '代理流程'
+            'Agent Flows': '代理流程',
+            // Additional UI strings that are used in the app but were
+            // missing from the Chinese translations. Providing translations
+            // here helps ensure the UI remains fully localized when the
+            // language is switched to Chinese.
+            'Card View': '卡片视图',
+            'List View': '列表视图',
+            Inactive: '未激活',
+            'Search Name/Description/Node': '名称/描述/节点'
         }
     },
     en: {

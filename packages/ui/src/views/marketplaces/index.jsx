@@ -608,7 +608,7 @@ const Marketplace = () => {
                                     }}
                                     variant='contained'
                                     value='card'
-                                    title='Card View'
+                                    title={t('Card View')}
                                 >
                                     <IconLayoutGrid />
                                 </ToggleButton>
@@ -620,7 +620,7 @@ const Marketplace = () => {
                                     }}
                                     variant='contained'
                                     value='list'
-                                    title='List View'
+                                    title={t('List View')}
                                 >
                                     <IconList />
                                 </ToggleButton>
