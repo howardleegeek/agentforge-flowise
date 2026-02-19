@@ -35,6 +35,8 @@ English | [繁體中文](./i18n/README-TW.md) | [简体中文](./i18n/README-ZH.
 
 ## ⚡Quick Start
 
+- Branding note: Flowise has been rebranded to AgentForge. All branding references and assets have been updated accordingly where feasible in this repo.
+
 Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
 
 1. Install AgentForge
@@ -185,18 +187,18 @@ Deploy AgentForge self-hosted in your existing infrastructure, we support variou
     <summary>Others</summary>
     - [Railway](https://docs.flowiseai.com/configuration/deployment/railway)
 
-                                                  [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
+                                                    [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
 
-                    - [Northflank](https://northflank.com/stacks/deploy-agentforge)
+                      - [Northflank](https://northflank.com/stacks/deploy-agentforge)
 
-                    [![Deploy to Northflank](https://assets.northflank.com/deploy_to_northflank_smm_36700fb050.svg)](https://northflank.com/stacks/deploy-flowiseai)
+                      [![Deploy to Northflank](https://assets.northflank.com/deploy_to_northflank_smm_36700fb050.svg)](https://northflank.com/stacks/deploy-flowiseai)
 
-                  - [Render](https://docs.agentforge.io/configuration/deployment/render)
+                    - [Render](https://docs.agentforge.io/configuration/deployment/render)
 
-                  [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/configuration/deployment/render)
-                  - [HuggingFace Spaces](https://docs.agentforge.io/deployment/hugging-face)
+                    [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/configuration/deployment/render)
+                    - [HuggingFace Spaces](https://docs.agentforge.io/deployment/hugging-face)
 
-                  <a href="https://huggingface.co/spaces/AgentForge/AgentForge"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
+                    <a href="https://huggingface.co/spaces/AgentForge/AgentForge"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
 
     - [Elestio](https://elest.io/open-source/flowiseai)
 
@@ -210,7 +212,7 @@ Deploy AgentForge self-hosted in your existing infrastructure, we support variou
 
         [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
 
-                                                </details>
+                                                  </details>
 
 ## ☁️ AgentForge Cloud
 

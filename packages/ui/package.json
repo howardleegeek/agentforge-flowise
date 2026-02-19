@@ -80,6 +80,7 @@
         "dev": "vite",
         "start": "vite",
         "build": "vite build",
+        "test": "node tests/branding-test.js",
         "clean": "rimraf build",
         "nuke": "rimraf build node_modules .turbo"
     },
