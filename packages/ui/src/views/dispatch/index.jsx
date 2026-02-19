@@ -59,7 +59,7 @@ export const DispatchDashboard = () => {
                 <div />
             ) : (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    <ViewHeader title='Dispatch' description='Cluster nodes, slots usage and task queue' />
+                    <ViewHeader title='Dispatch' description='Cluster nodes, slots usage, and task queue' />
                     <Grid container spacing={gridSpacing}>
                         {loading &&
                             Array.from({ length: 3 }).map((_, idx) => (
