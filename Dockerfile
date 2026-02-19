@@ -6,6 +6,10 @@
 
 FROM node:20-alpine
 
+ARG IMAGE_NAME=agentforge
+LABEL org.opencontainers.image.title=$IMAGE_NAME
+LABEL org.opencontainers.image.description="AgentForge Docker image"
+
 # Install system dependencies and build tools
 RUN apk update && \
     apk add --no-cache \
