@@ -53,7 +53,6 @@ export default {
         'Sequential Agents': '顺序智能体',
         'No Marketplace Yet': '尚无市场模板',
         'No Saved Custom Templates': '暂无已保存的自定义模板',
-        // Extra placeholders to help future UI strings localization
         Agree: '同意',
         Disagree: '不同意'
     }
