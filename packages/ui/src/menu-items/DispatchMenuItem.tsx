@@ -7,7 +7,7 @@ import { ListItem, ListItemButton, ListItemText } from '@mui/material'
 export const DispatchMenuItem: React.FC = () => {
     return (
         <ListItem disablePadding component={RouterLink} to='/dispatch'>
-            <ListItemButton>
+            <ListItemButton aria-label='Dispatch'>
                 <ListItemText primary='Dispatch' />
             </ListItemButton>
         </ListItem>
