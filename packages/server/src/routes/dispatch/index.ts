@@ -5,8 +5,13 @@ const router = express.Router()
 const bridge = new DispatchBridge()
 
 // POST /api/v1/dispatch/submit — 提交 workflow 到 dispatch
+interface SubmitPayload {
+    chatflowId: string
+    input?: any
+    flowName?: string
+}
 router.post('/submit', async (req: Request, res: Response) => {
-    const { chatflowId, input, flowName } = req.body || {}
+    const { chatflowId, input, flowName } = (req.body as SubmitPayload) || {}
     try {
         if (!bridge.isEnabled()) {
             return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
