@@ -10,6 +10,10 @@ import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } 
 // a consistent data-fetching surface across the UI.
 import apiDispatch from '@/api/dispatch'
 
+// Refresh interval for the dashboard data (ms).
+// Kept as a named constant to avoid magic numbers scattered in the code.
+const REFRESH_INTERVAL_MS = 10000
+
 type NodeInfo = {
     id?: string
     name?: string
@@ -111,7 +115,7 @@ const DispatchDashboard: React.FC = () => {
 
     useEffect(() => {
         fetchData()
-        const t = setInterval(fetchData, 10000)
+        const t = setInterval(fetchData, REFRESH_INTERVAL_MS)
         return () => {
             clearInterval(t)
         }
