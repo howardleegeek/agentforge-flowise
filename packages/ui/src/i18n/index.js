@@ -60,7 +60,6 @@ const resources = {
     },
     en: {
         translation: {
-            Language: 'Language',
             Providers: 'Providers',
             Active: 'Active',
             Settings: 'Settings',
