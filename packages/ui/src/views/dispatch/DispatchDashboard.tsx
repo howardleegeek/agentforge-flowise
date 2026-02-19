@@ -25,6 +25,7 @@ const DispatchDashboard: React.FC = () => {
     const [tasks, setTasks] = useState<TasksSummary>({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [lastUpdated, setLastUpdated] = useState<string | null>(null)
 
     const fetchData = async () => {
         try {
@@ -60,6 +61,7 @@ const DispatchDashboard: React.FC = () => {
             setError('Failed to fetch dispatch data')
         } finally {
             setLoading(false)
+            setLastUpdated(new Date().toLocaleTimeString())
         }
     }
 
@@ -81,6 +83,11 @@ const DispatchDashboard: React.FC = () => {
             <Typography variant='h5' gutterBottom>
                 Dispatch Dashboard
             </Typography>
+            {lastUpdated && (
+                <Typography variant='caption' display='block' sx={{ mb: 2 }}>
+                    Last updated: {lastUpdated}
+                </Typography>
+            )}
 
             {loading && <Typography variant='body2'>Loading...</Typography>}
             {error && (
