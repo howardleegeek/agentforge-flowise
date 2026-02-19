@@ -1,5 +1,8 @@
 import i18next from 'i18next'
 
+// Expose default language for external tooling/tests if needed
+export const DEFAULT_LANGUAGE = 'zh'
+
 // Load Chinese translations from a separate module to simplify maintenance
 // and to avoid JSON import pitfalls in some runtimes.
 import zh from '../../../../i18n/zh.js'
@@ -73,7 +76,7 @@ const resources = {
 const i18n = i18next.createInstance()
 i18n.init({
     resources,
-    lng: 'zh', // default to Chinese as per specification
+    lng: DEFAULT_LANGUAGE, // default to Chinese as per specification
     fallbackLng: 'en',
     ns: ['translation'],
     defaultNS: 'translation',
