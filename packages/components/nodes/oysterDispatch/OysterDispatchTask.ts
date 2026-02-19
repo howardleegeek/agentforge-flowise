@@ -19,49 +19,62 @@ class OysterDispatchTask implements INode {
         this.type = 'OysterDispatchTask'
         this.icon = 'oysterDispatchTask.svg'
         this.category = 'Oyster'
-        this.description = 'Wraps a subworkflow as a dispatch task'
-        this.baseClasses = [this.type, 'Dispatch', 'Task']
+        this.description = 'Wraps a subworkflow as a dispatch task for a single workflow execution'
+        this.baseClasses = [this.type, 'Task']
         this.inputs = [
             {
                 label: 'Project',
                 name: 'project',
-                type: 'string'
+                type: 'string',
+                default: ''
             } as INodeParams,
             {
                 label: 'Priority',
                 name: 'priority',
-                type: 'options',
-                options: [
-                    { label: 'Low', name: 'low' },
-                    { label: 'Medium', name: 'medium' },
-                    { label: 'High', name: 'high' }
-                ],
-                default: 'medium'
+                type: 'string',
+                default: 'normal'
             } as INodeParams,
             {
                 label: 'Estimated Minutes',
                 name: 'estimatedMinutes',
-                type: 'number'
+                type: 'number',
+                default: 30
             } as INodeParams,
             {
                 label: 'Node Preference',
                 name: 'nodePreference',
                 type: 'string',
-                optional: true
+                optional: true,
+                default: ''
             } as INodeParams
         ]
         this.outputs = [
-            { label: 'Task Id', name: 'taskId', baseClasses: this.baseClasses },
-            { label: 'Status', name: 'status', baseClasses: this.baseClasses },
-            { label: 'Result', name: 'result', baseClasses: this.baseClasses }
+            {
+                label: 'Task ID',
+                name: 'task_id',
+                baseClasses: this.baseClasses
+            } as INodeOutputsValue,
+            {
+                label: 'Status',
+                name: 'status',
+                baseClasses: this.baseClasses
+            } as INodeOutputsValue,
+            {
+                label: 'Result',
+                name: 'result',
+                baseClasses: this.baseClasses
+            } as INodeOutputsValue
         ]
     }
 
     async init(nodeData: INodeData, _input: string, _options: ICommonObject): Promise<any> {
-        // Basic validation to satisfy tests and preserve behavior
         const project = nodeData.inputs?.project
-        if (!project) {
-            throw new Error('Project is required for OysterDispatchTask')
+        if (typeof project !== 'undefined' && typeof project !== 'string') {
+            throw new Error('Invalid project value')
+        }
+        const estimatedMinutes = nodeData.inputs?.estimatedMinutes
+        if (typeof estimatedMinutes !== 'undefined' && Number.isNaN(Number(estimatedMinutes))) {
+            throw new Error('Invalid estimatedMinutes value')
         }
         return {}
     }
