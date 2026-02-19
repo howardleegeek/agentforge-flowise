@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth'
 // Material-UI
 import { Skeleton, Toolbar, Box, Button, Card, CardContent, Grid, OutlinedInput, Stack, Typography, TextField } from '@mui/material'
 import { useTheme, styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import { IconScissors, IconArrowLeft, IconDatabaseImport, IconBook, IconX, IconEye } from '@tabler/icons-react'
 
 // Project import
@@ -64,6 +65,7 @@ const LoaderConfigPreviewChunks = () => {
     const navigate = useNavigate()
     const theme = useTheme()
     const { error } = useError()
+    const { t } = useTranslation()
     const { hasAssignedWorkspace } = useAuth()
 
     const getNodeDetailsApi = useApi(nodesApi.getSpecificNode)
@@ -335,7 +337,7 @@ const LoaderConfigPreviewChunks = () => {
 
             // Set options
             const options = getNodesByCategoryApi.data.map((splitter) => ({
-                label: splitter.label,
+                label: t(splitter.label) || splitter.label,
                 name: splitter.name
             }))
             options.unshift({ label: 'None', name: 'none' })
