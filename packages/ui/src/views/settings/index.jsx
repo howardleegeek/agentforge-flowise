@@ -17,6 +17,7 @@ import settings from '@/menu-items/settings'
 import agentsettings from '@/menu-items/agentsettings'
 import customAssistantSettings from '@/menu-items/customassistant'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 // ==============================|| SETTINGS ||============================== //
 
@@ -27,6 +28,7 @@ const Settings = ({ chatflow, isSettingsOpen, isCustomAssistant, anchorEl, isAge
     const inputFile = useRef(null)
     const [open, setOpen] = useState(false)
     const { hasPermission } = useAuth()
+    const { t, i18n } = useTranslation()
 
     const handleFileUpload = (e) => {
         if (!e.target.files) return
@@ -65,6 +67,24 @@ const Settings = ({ chatflow, isSettingsOpen, isCustomAssistant, anchorEl, isAge
     }, [isSettingsOpen])
 
     // settings list items
+
+    // Language switcher for the Settings page
+    const renderLanguageSwitcher = () => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.5 }}>
+            <Typography variant='caption' sx={{ color: 'text.secondary' }}>
+                {t('Language')}:
+            </Typography>
+            <Typography variant='caption' sx={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => i18n.changeLanguage('zh')}>
+                {t('Chinese')}
+            </Typography>
+            <Typography variant='caption' sx={{ color: 'text.secondary' }}>
+                /
+            </Typography>
+            <Typography variant='caption' sx={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => i18n.changeLanguage('en')}>
+                {t('English')}
+            </Typography>
+        </Box>
+    )
     const items = settingsMenu.map((menu) => {
         if (menu.permission && !hasPermission(menu.permission)) {
             return null
@@ -134,6 +154,7 @@ const Settings = ({ chatflow, isSettingsOpen, isCustomAssistant, anchorEl, isAge
                                     <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
                                         <Box sx={{ p: 2 }}>
                                             <List>{items}</List>
+                                            {renderLanguageSwitcher()}
                                         </Box>
                                     </PerfectScrollbar>
                                     <input
