@@ -33,6 +33,10 @@ router.post('/submit', async (req: Request, res: Response) => {
 router.get('/status/:taskId', async (req: Request, res: Response) => {
     const { taskId } = req.params
     try {
+        // If dispatch bridge is disabled, skip and return a clear indicator
+        if (!bridge.isEnabled()) {
+            return res.json({ skipped: true, reason: 'DISPATCH_DISABLED' })
+        }
         const status = await bridge.status(taskId)
         res.json(status)
     } catch (err: any) {
@@ -43,6 +47,10 @@ router.get('/status/:taskId', async (req: Request, res: Response) => {
 // GET /api/v1/dispatch/nodes — 查看可用节点
 router.get('/nodes', async (_req: Request, res: Response) => {
     try {
+        // If dispatch bridge is disabled, skip and return a clear indicator
+        if (!bridge.isEnabled()) {
+            return res.json({ skipped: true, reason: 'DISPATCH_DISABLED', nodes: [] })
+        }
         const nodes = await bridge.nodes()
         res.json(nodes)
     } catch (err: any) {
