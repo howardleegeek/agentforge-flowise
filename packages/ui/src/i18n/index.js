@@ -41,6 +41,7 @@ const resources = {
             English: 'English',
             AddNew: '新增',
             'Search Name or Category': '搜索名称或类别',
+            Inactive: '未激活',
             'Search Name/Description/Node': '搜索名称/描述/节点',
             Marketplace: '市场',
             'Explore and use pre-built templates': '探索并使用预构建模板',
