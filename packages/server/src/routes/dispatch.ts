@@ -7,9 +7,8 @@ router.use(express.json())
 
 // Submit a workflow to dispatch
 router.post('/api/v1/dispatch/submit', async (req: Request, res: Response) => {
-    // If dispatch is disabled, skip
-    const enabled = process.env.DISPATCH_ENABLED === 'true' || process.env.DISPATCH_ENABLED === '1'
-    if (!enabled) {
+    // Rely on the bridge to determine if dispatch is enabled
+    if (!(DispatchBridge as any).isEnabled()) {
         return res.json({ ok: true, dispatched: false, reason: 'DISPATCH_DISABLED' })
     }
     const { chatflowId, input } = req.body || {}
