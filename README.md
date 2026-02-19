@@ -28,7 +28,7 @@ English | [繁體中文](./i18n/README-TW.md) | [简体中文](./i18n/README-ZH.
 - [🌱 Env Variables](#-env-variables)
 - [📖 Documentation](#-documentation)
 - [🌐 Self Host](#-self-host)
-- [☁️ Flowise Cloud](#️-flowise-cloud)
+- [☁️ AgentForge Cloud](#-agentforge-cloud)
 - [🙋 Support](#-support)
 - [🙌 Contributing](#-contributing)
 - [📄 License](#-license)
@@ -53,7 +53,7 @@ Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
 
 ### Docker Compose
 
-1. Clone the Flowise project
+1. Clone the AgentForge project
 2. Go to `docker` folder at the root of the project
 3. Copy `.env.example` file, paste it into the same location, and rename to `.env` file
 4. `docker compose up -d`
@@ -65,19 +65,19 @@ Download and Install [NodeJS](https://nodejs.org/en/download) >= 18.15.0
 1. Build the image locally:
 
     ```bash
-    docker build --no-cache -t flowise .
+    docker build --no-cache -t agentforge .
     ```
 
 2. Run image:
 
     ```bash
-    docker run -d --name flowise -p 3000:3000 flowise
+    docker run -d --name agentforge -p 3000:3000 agentforge
     ```
 
 3. Stop image:
 
     ```bash
-    docker stop flowise
+    docker stop agentforge
     ```
 
 ## 👨‍💻 Developers
@@ -107,7 +107,7 @@ AgentForge has 3 different modules in a single mono repository.
 2.  Go into repository folder:
 
     ```bash
-    cd Flowise
+    cd AgentForge
     ```
 
 3.  Install all dependencies of all modules:
@@ -166,44 +166,43 @@ AgentForge has 3 different modules in a single mono repository.
 
 ## 🌱 Env Variables
 
-Flowise supports different environment variables to configure your instance. You can specify the following variables in the `.env` file inside `packages/server` folder. Read [more](https://github.com/FlowiseAI/Flowise/blob/main/CONTRIBUTING.md#-env-variables)
+AgentForge supports different environment variables to configure your instance. You can specify the following variables in the `.env` file inside `packages/server` folder. Read [more](https://github.com/oyster/agentforge/blob/master/CONTRIBUTING.md#-env-variables)
 
 ## 📖 Documentation
 
-You can view the Flowise Docs [here](https://docs.flowiseai.com/)
+You can view the AgentForge Docs [here](https://docs.agentforge.io/)
 
 ## 🌐 AgentForge Cloud
 
-Deploy Flowise self-hosted in your existing infrastructure, we support various [deployments](https://docs.flowiseai.com/configuration/deployment)
+Deploy AgentForge self-hosted in your existing infrastructure, we support various [deployments](https://docs.agentforge.io/configuration/deployment)
 
 - [AWS](https://docs.flowiseai.com/configuration/deployment/aws)
 - [Azure](https://docs.flowiseai.com/configuration/deployment/azure)
 - [Digital Ocean](https://docs.flowiseai.com/configuration/deployment/digital-ocean)
 - [GCP](https://docs.flowiseai.com/configuration/deployment/gcp)
-- [Alibaba Cloud](https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=Flowise社区版)
+- [Alibaba Cloud](https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=AgentForge社区版)
 - <details>
     <summary>Others</summary>
     - [Railway](https://docs.flowiseai.com/configuration/deployment/railway)
 
-                    [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
+                                                  [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
 
-    - [Northflank](https://northflank.com/stacks/deploy-flowiseai)
+                    - [Northflank](https://northflank.com/stacks/deploy-agentforge)
 
-        [![Deploy to Northflank](https://assets.northflank.com/deploy_to_northflank_smm_36700fb050.svg)](https://northflank.com/stacks/deploy-flowiseai)
+                    [![Deploy to Northflank](https://assets.northflank.com/deploy_to_northflank_smm_36700fb050.svg)](https://northflank.com/stacks/deploy-flowiseai)
 
-    - [Render](https://docs.flowiseai.com/configuration/deployment/render)
+                  - [Render](https://docs.agentforge.io/configuration/deployment/render)
 
-        [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/configuration/deployment/render)
+                  [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/configuration/deployment/render)
+                  - [HuggingFace Spaces](https://docs.agentforge.io/deployment/hugging-face)
 
-    - [HuggingFace Spaces](https://docs.flowiseai.com/deployment/hugging-face)
-
-        <a href="https://huggingface.co/spaces/FlowiseAI/Flowise"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
+                  <a href="https://huggingface.co/spaces/AgentForge/AgentForge"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
 
     - [Elestio](https://elest.io/open-source/flowiseai)
 
         [![Deploy on Elestio](https://elest.io/images/logos/deploy-to-elestio-btn.png)](https://elest.io/open-source/flowiseai)
 
-    - [Sealos](https://template.sealos.io/deploy?templateName=flowise)
+    - [Sealos](https://template.sealos.io/deploy?templateName=agentforge)
 
         [![Deploy on Sealos](https://sealos.io/Deploy-on-Sealos.svg)](https://template.sealos.io/deploy?templateName=flowise)
 
@@ -211,7 +210,7 @@ Deploy Flowise self-hosted in your existing infrastructure, we support various [
 
         [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
 
-                  </details>
+                                                </details>
 
 ## ☁️ AgentForge Cloud
 
@@ -219,7 +218,7 @@ Get Started with [AgentForge Cloud](https://agentforge.io/).
 
 ## 🙋 Support
 
-Feel free to ask any questions, raise problems, and request new features in [Discussion](https://github.com/FlowiseAI/Flowise/discussions).
+Feel free to ask any questions, raise problems, and request new features in [Discussion](https://github.com/oyster/agentforge/discussions).
 
 ## 🙌 Contributing
 
