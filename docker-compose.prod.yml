@@ -6,8 +6,8 @@ services:
         restart: unless-stopped
         environment:
             - PORT=${PORT:-3000}
-            - DISPATCH_ENABLED=${DISPATCH_ENABLED}
-            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL}
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED:-true}
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-https://controller.example.com}
             - DATABASE_PATH=${DATABASE_PATH}
             - DATABASE_TYPE=${DATABASE_TYPE}
             - DATABASE_PORT=${DATABASE_PORT}

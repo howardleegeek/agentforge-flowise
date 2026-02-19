@@ -9,8 +9,8 @@ services:
             - PORT=${PORT:-3000}
 
             # DISPATCH CONFIGURATION
-            - DISPATCH_ENABLED=${DISPATCH_ENABLED}
-            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL}
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED:-true}
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-https://controller.example.com}
 
             # DATABASE
             - DATABASE_PATH=${DATABASE_PATH}
