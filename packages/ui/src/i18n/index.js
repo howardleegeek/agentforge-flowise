@@ -1,7 +1,19 @@
 import i18next from 'i18next'
 
 // Expose default language for external tooling/tests if needed
+// Default language is Chinese. Also support reading from localStorage to
+// persist user preference across reloads.
 export const DEFAULT_LANGUAGE = 'zh'
+
+// Resolve initial language from localStorage if available, otherwise fall back
+// to the compiled DEFAULT_LANGUAGE.
+const getInitialLanguage = () => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('i18nLng')
+        if (saved) return saved
+    }
+    return DEFAULT_LANGUAGE
+}
 
 // Load Chinese translations from a separate module to simplify maintenance
 // and to avoid JSON import pitfalls in some runtimes.
@@ -76,7 +88,7 @@ const resources = {
 const i18n = i18next.createInstance()
 i18n.init({
     resources,
-    lng: DEFAULT_LANGUAGE, // default to Chinese as per specification
+    lng: getInitialLanguage(), // initialize to stored language or Chinese by default
     fallbackLng: 'en',
     ns: ['translation'],
     defaultNS: 'translation',
@@ -92,6 +104,10 @@ export const setLanguage = async (lng) => {
     try {
         if (typeof i18n?.changeLanguage === 'function') {
             await i18n.changeLanguage(lng)
+            // Persist the chosen language for future sessions
+            if (typeof window !== 'undefined' && window.localStorage) {
+                window.localStorage.setItem('i18nLng', lng)
+            }
         }
     } catch (err) {
         console.error('i18n setLanguage failed', err)
