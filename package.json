@@ -24,6 +24,7 @@
         "user:windows": "cd packages/server/bin && run user",
         "user:default": "cd packages/server/bin && ./run user",
         "test": "turbo run test",
+        "test-i18n-default": "node test/i18n.zh.default.test.mjs",
         "test-i18n": "node test/i18n.zh.test.mjs",
         "test:coverage": "turbo run test:coverage",
         "clean": "pnpm --filter \"./packages/**\" clean",
