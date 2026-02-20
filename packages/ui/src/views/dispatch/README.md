@@ -1,22 +1,29 @@
-- Dispatch 控制面板（Dispatch Dashboard）
+Dispatch UI in AgentForge
 
-- 显示集群节点状态、slots 使用率和任务队列。
-- 数据来源：/api/v1/dispatch/\* API 调用。
-- 数据每 10 秒自动刷新，支持自动轮询更新。
-- 采用现有的 Material-UI 风格，具备响应式布局。
-- 实现状态：已完成。已在侧边栏添加 Dispatch 菜单项，点击进入后可查看节点、Slots、以及任务队列的实时状态；构建通过且未添加额外的 npm 依赖。
+Overview
 
-What this change adds (verification guidance):
+- Adds a Dispatch control panel to the UI under the /dispatch route.
+- Displays cluster nodes, per-node Slots usage, and the current task queue.
+- Sidebar includes a Dispatch menu item to navigate to the panel.
+- Data is fetched from /api/v1/dispatch/\* endpoints and refreshed every 10 seconds.
 
-- 侧边栏包含 Dispatch 菜单项，导航到控制面板。
-- Dispatch Dashboard 展示节点卡片，包含名称、Slots 和状态信息。
-- 仪表盘显示 Pending、Running、Completed 三类任务的计数。
-- 构建通过，执行 npm run build 即可。
-- Dispatch 面板已在侧边栏完成集成，点击“Dispatch”进入后可查看节点、Slots 使用率与任务队列的实时状态；无额外依赖。
+Files touched by this feature (existing in this repo):
 
-- Verification steps (local):
--   - Run `npm run build` to ensure the UI builds successfully.
--   - Open the UI and click the Dispatch item in the sidebar.
--   - Verify that node cards render with name, slots usage, and status, and that Pending/Running/Completed counts appear.
+- packages/ui/src/views/dispatch/DispatchDashboard.tsx
+- packages/ui/src/views/dispatch/index.tsx
+- packages/ui/src/menu-items/DispatchMenuItem.tsx
+- packages/ui/src/routes/MainRoutes.jsx (Dispatch route)
+- packages/ui/src/api/dispatch.js (API wrappers)
 
-Status: Implemented and verified via unit tests; ready for npm build.
+How to test
+
+- Run npm install and npm run build to ensure the app bundles cleanly.
+- Open the UI and verify:
+    1. The sidebar shows a Dispatch entry.
+    2. Clicking Dispatch loads the dashboard with a list of nodes, their slots usage, and the queue counts (pending/running/completed).
+    3. Data auto-refreshes every 10 seconds; Last updated timestamp updates accordingly.
+
+Notes
+
+- No new dependencies are introduced. The UI reuses existing MUI components.
+- The layout is responsive and designed to fit current visual language.
