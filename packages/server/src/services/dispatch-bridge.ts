@@ -110,6 +110,13 @@ export class DispatchBridge {
         if (!payload?.taskId) return
         const status = payload.status ?? 'unknown'
         globalStatusStore.set(payload.taskId, status)
+        // Lightweight log with context to aid tracing callbacks from controller
+        try {
+            // eslint-disable-next-line no-console
+            console.debug(`DispatchBridge callback: taskId=${payload.taskId} status=${status}`)
+        } catch {
+            // no-op if logging fails
+        }
     }
 
     // Instance-level wrappers for tests that instantiate the class
