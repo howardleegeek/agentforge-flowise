@@ -1,3 +1,7 @@
+// AF04 Dispatch Dashboard - verifications note
+// This patch serves as a lightweight annotation to indicate the UI wiring:
+// - Sidebar dispatch entry points to this view
+// - Auto-refresh polls every 10 seconds
 import React, { useEffect, useState } from 'react'
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
 // This file is wired into the existing UI: it is reachable via /dispatch and is auto-refreshed every 10s.
