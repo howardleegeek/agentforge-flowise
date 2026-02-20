@@ -23,6 +23,10 @@ import apiDispatch from '@/api/dispatch'
 // Kept as a named constant to avoid magic numbers scattered in the code.
 const REFRESH_INTERVAL_MS = 10000
 
+// Optional task identifier injected by the hosting environment for tracing
+// We gracefully degrade if not provided.
+const TASK_ID = (typeof window !== 'undefined' ? (window as any).__OC_TASK_ID__ : undefined) ?? 'unknown'
+
 type NodeInfo = {
     id?: string
     name?: string
@@ -100,7 +104,7 @@ const DispatchDashboard: React.FC = () => {
             }
             setNodes(normalized)
             // Debug: log fetched nodes count for quick inspection
-            console.debug('DispatchDashboard: fetched nodes', normalized.length)
+            console.debug(`DispatchDashboard [task_id=${TASK_ID}]: fetched nodes`, normalized.length)
 
             // Tasks summary
             let queueCounts: any = { pending: 0, running: 0, completed: 0 }
@@ -117,7 +121,7 @@ const DispatchDashboard: React.FC = () => {
             }
             setTasks(queueCounts)
             // Debug: log queue counts for quick inspection
-            console.debug('DispatchDashboard: queueCounts', queueCounts)
+            console.debug(`DispatchDashboard [task_id=${TASK_ID}]: queueCounts`, queueCounts)
         } catch {
             setError('Failed to fetch dispatch data')
         } finally {
