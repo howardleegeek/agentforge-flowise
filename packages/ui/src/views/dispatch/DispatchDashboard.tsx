@@ -173,7 +173,7 @@ const DispatchDashboard: React.FC = () => {
             )}
 
             <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={4} md={4}>
+                <Grid item xs={12} sm={4} md={4}>
                     <Card>
                         <CardHeader title='Pending' />
                         <CardContent>
@@ -182,7 +182,7 @@ const DispatchDashboard: React.FC = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={4} md={4}>
+                <Grid item xs={12} sm={4} md={4}>
                     <Card>
                         <CardHeader title='Running' />
                         <CardContent>
@@ -190,7 +190,7 @@ const DispatchDashboard: React.FC = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={4} md={4}>
+                <Grid item xs={12} sm={4} md={4}>
                     <Card>
                         <CardHeader title='Completed' />
                         <CardContent>
