@@ -55,6 +55,7 @@ const resources = {
             'Last Modified Date': 'Last Modified Date',
             Actions: 'Actions',
             NEW: 'New',
+            AddNew: 'Add New',
             Chinese: 'Chinese',
             English: 'English',
             Cancel: 'Cancel',
