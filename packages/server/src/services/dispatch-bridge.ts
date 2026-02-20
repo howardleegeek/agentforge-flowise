@@ -55,7 +55,9 @@ export class DispatchBridge {
         // If dispatch is disabled, skip work as per acceptance criteria
         if (!this.isEnabled()) return null
 
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL || ''
+        // Normalize controller URL by stripping trailing slashes to avoid //submit style paths
+        const controllerUrlRaw = process.env.DISPATCH_CONTROLLER_URL || ''
+        const controllerUrl = controllerUrlRaw.replace(/\/+$/, '')
         if (!controllerUrl) return null
 
         try {
@@ -82,7 +84,8 @@ export class DispatchBridge {
 
     async status(taskId: string): Promise<{ status: string }> {
         if (!this.isEnabled()) return { status: 'skipped' }
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL || ''
+        const controllerUrlRaw = process.env.DISPATCH_CONTROLLER_URL || ''
+        const controllerUrl = controllerUrlRaw.replace(/\/+$/, '')
         if (!controllerUrl) return { status: 'unknown' }
         const res = await fetch(`${controllerUrl}/status/${taskId}`, {
             method: 'GET',
@@ -104,7 +107,8 @@ export class DispatchBridge {
 
     async nodes(): Promise<string[]> {
         if (!this.isEnabled()) return []
-        const controllerUrl = process.env.DISPATCH_CONTROLLER_URL || ''
+        const controllerUrlRaw = process.env.DISPATCH_CONTROLLER_URL || ''
+        const controllerUrl = controllerUrlRaw.replace(/\/+$/, '')
         if (!controllerUrl) return []
         const res = await fetch(`${controllerUrl}/nodes`, {
             method: 'GET',
