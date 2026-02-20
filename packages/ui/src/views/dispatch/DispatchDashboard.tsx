@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 // - Sidebar: /dispatch entry points to this view
 // - Route: /dispatch loads this dashboard via the Dispatch page wrapper
 // Auto-refresh is performed every 10 seconds.
-import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } from '@mui/material'
+import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress, Skeleton } from '@mui/material'
 
 // API client for dispatch endpoints. Reuses existing api/dispatch module to keep
 // a consistent data-fetching surface across the UI.
@@ -147,7 +147,15 @@ const DispatchDashboard: React.FC = () => {
                 </Typography>
             )}
 
-            {loading && <Typography variant='body2'>Loading...</Typography>}
+            {loading && (
+                <Grid container spacing={2} sx={{ mt: 1 }}>
+                    {Array.from({ length: 3 }).map((_, idx) => (
+                        <Grid item xs={12} sm={6} md={4} key={idx}>
+                            <Skeleton variant='rounded' height={120} />
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
             {!loading && nodes.length === 0 && (
                 <Typography variant='body2' color='text.secondary' sx={{ mt: 1 }}>
                     No nodes found
