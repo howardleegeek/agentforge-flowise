@@ -8,6 +8,9 @@ import { Box, Card, CardContent, CardHeader, Grid, Typography, LinearProgress } 
 
 // API client for dispatch endpoints. Reuses existing api/dispatch module to keep
 // a consistent data-fetching surface across the UI.
+// NOTE: The API may return payloads in slightly different shapes (e.g. data.data
+// vs data). The normalization logic below accounts for these variations to keep
+// the UI resilient across API changes.
 import apiDispatch from '@/api/dispatch'
 
 // Refresh interval for the dashboard data (ms).
