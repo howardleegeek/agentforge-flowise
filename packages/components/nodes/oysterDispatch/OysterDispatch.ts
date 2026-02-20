@@ -1,7 +1,7 @@
 import { INode, INodeData, ICommonObject, INodeParams } from '../../../src/Interface'
 
 // Oyster Dispatch Task Node
-// Wraps a sub-workflow as a dispatch task with basic parameters
+// Wraps a sub-workflow as a dispatch task
 class OysterDispatchTask implements INode {
     label: string
     name: string
@@ -19,40 +19,34 @@ class OysterDispatchTask implements INode {
         this.name = 'oysterDispatchTask'
         this.version = 1.0
         this.type = 'OysterDispatchTask'
-        this.icon = 'oysterDispatch.svg'
+        this.icon = 'oysterDispatchTask.svg'
         this.category = 'Oyster'
-        this.description = 'Wrap sub-workflow as a dispatch task to a workflow executor'
+        this.description = 'Wraps a sub-workflow as a dispatch task'
         this.baseClasses = [this.type]
         this.inputs = [
             {
                 label: 'Project',
                 name: 'project',
                 type: 'string',
-                placeholder: 'Target project name'
+                default: ''
             },
             {
                 label: 'Priority',
                 name: 'priority',
-                type: 'options',
-                options: [
-                    { label: 'Low', name: 'low' },
-                    { label: 'Medium', name: 'medium' },
-                    { label: 'High', name: 'high' }
-                ],
-                default: 'medium'
+                type: 'number',
+                default: 1
             },
             {
                 label: 'Estimated Minutes',
                 name: 'estimated_minutes',
                 type: 'number',
-                step: 1,
-                optional: true,
-                default: 5
+                default: 15
             },
             {
                 label: 'Node Preference',
                 name: 'node_preference',
                 type: 'string',
+                default: 'default',
                 optional: true
             }
         ]
@@ -60,33 +54,35 @@ class OysterDispatchTask implements INode {
             {
                 label: 'Task ID',
                 name: 'task_id',
-                description: 'Dispatched task id',
-                baseClasses: ['string']
+                description: 'Dispatched task identifier',
+                baseClasses: [...this.baseClasses, 'string']
             },
             {
                 label: 'Status',
                 name: 'status',
-                description: 'Dispatch status',
-                baseClasses: ['string']
+                description: 'Current status of the dispatched task',
+                baseClasses: [...this.baseClasses, 'string']
             },
             {
                 label: 'Result',
                 name: 'result',
-                description: 'Dispatch result',
-                baseClasses: ['json']
+                description: 'Dispatch result placeholder',
+                baseClasses: [...this.baseClasses, 'json']
             }
         ]
     }
 
-    // Optional init hook used by Flowise to initialize node execution
-    async init(nodeData: INodeData, _: string, __?: ICommonObject): Promise<any> {
-        // Minimal placeholder implementation that returns a dispatched-task payload
-        const payload = {
-            task_id: ` OysterDispatchTask_${Date.now()}`,
-            status: 'queued',
-            result: {}
+    async init(nodeData: INodeData, _path: string, _options: ICommonObject): Promise<any> {
+        // Minimal placeholder: generate a synthetic task id and empty result
+        const taskId = `dispatch_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+        const status = 'submitted'
+        const result = null
+
+        return {
+            task_id: taskId,
+            status,
+            result
         }
-        return payload
     }
 }
 
