@@ -8,8 +8,10 @@ services:
             - PORT=${PORT}
 
             # DISPATCH CONFIGURATION
-            - DISPATCH_ENABLED=${DISPATCH_ENABLED}
-            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL}
+            # Enable dispatch mode for distributed agent execution
+            - DISPATCH_ENABLED=${DISPATCH_ENABLED:-false}
+            # URL of the dispatch controller service
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-http://localhost:8080}
 
             # DATABASE
             - DATABASE_PATH=${DATABASE_PATH}
