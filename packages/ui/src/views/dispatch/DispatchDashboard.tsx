@@ -2,7 +2,7 @@
 // This patch serves as a lightweight annotation to indicate the UI wiring:
 // - Sidebar dispatch entry points to this view
 // - Auto-refresh polls every 10 seconds
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 // Note: This component is wired to /api/v1/dispatch/* endpoints and auto-refreshes every 10s (see REFRESH_INTERVAL_MS).
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
 // This file is wired into the existing UI: it is reachable via /dispatch and is auto-refreshed every 10s.
@@ -53,6 +53,8 @@ const DispatchDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [lastUpdated, setLastUpdated] = useState<string | null>(null)
+    // Persist the refresh timer so we can pause it when the tab is hidden
+    const intervalRef = useRef<number | null>(null)
 
     // No manual AbortController; we rely on api client semantics for cancellation if needed
     const fetchData = async () => {
@@ -131,10 +133,28 @@ const DispatchDashboard: React.FC = () => {
     }
 
     useEffect(() => {
+        // Initial fetch and start auto-refresh
         fetchData()
-        const t = setInterval(fetchData, REFRESH_INTERVAL_MS)
+        intervalRef.current = window.setInterval(fetchData, REFRESH_INTERVAL_MS)
+
+        // Pause refreshing when the tab becomes hidden and resume when visible
+        const onVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                if (intervalRef.current !== null) {
+                    clearInterval(intervalRef.current)
+                    intervalRef.current = null
+                }
+            } else {
+                if (intervalRef.current === null) {
+                    intervalRef.current = window.setInterval(fetchData, REFRESH_INTERVAL_MS)
+                }
+            }
+        }
+        document.addEventListener('visibilitychange', onVisibilityChange)
         return () => {
-            clearInterval(t)
+            if (intervalRef.current !== null) clearInterval(intervalRef.current)
+            intervalRef.current = null
+            document.removeEventListener('visibilitychange', onVisibilityChange)
         }
     }, [])
 
