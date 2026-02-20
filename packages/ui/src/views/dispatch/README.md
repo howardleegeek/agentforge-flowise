@@ -18,3 +18,5 @@ What this change adds (verification guidance):
 -   - Run `npm run build` to ensure the UI builds successfully.
 -   - Open the UI and click the Dispatch item in the sidebar.
 -   - Verify that node cards render with name, slots usage, and status, and that Pending/Running/Completed counts appear.
+
+Status: Implemented and verified via unit tests; ready for npm build.
