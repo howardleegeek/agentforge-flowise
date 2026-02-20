@@ -22,6 +22,14 @@ router.post('/submit', async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'chatflowId is required' })
         }
         const result = await DispatchBridge.submitTask(chatflowId, input)
+        // Lightweight debug log to aid tracing dispatch submissions
+        if (result && typeof result === 'object' && 'taskId' in result) {
+            // eslint-disable-next-line no-console
+            console.debug(`Dispatch bridge submitted, taskId=${(result as any).taskId}`)
+        } else {
+            // eslint-disable-next-line no-console
+            console.debug(`Dispatch bridge submission skipped or returned non-structured result:`, result)
+        }
         if (!result) {
             return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
         }
