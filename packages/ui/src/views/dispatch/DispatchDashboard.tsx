@@ -3,6 +3,7 @@
 // - Sidebar dispatch entry points to this view
 // - Auto-refresh polls every 10 seconds
 import React, { useEffect, useState } from 'react'
+// Note: This component is wired to /api/v1/dispatch/* endpoints and auto-refreshes every 10s (see REFRESH_INTERVAL_MS).
 // Note: This component consumes /api/v1/dispatch/* endpoints to render node status, slots usage, and queue counts.
 // This file is wired into the existing UI: it is reachable via /dispatch and is auto-refreshed every 10s.
 // This file is wired into the existing UI:
