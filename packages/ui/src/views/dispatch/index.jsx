@@ -43,11 +43,12 @@ const DispatchDashboard = () => {
 
     // Build a map of nodeId -> slots info
     const slotsByNode = React.useMemo(() => {
-        const map = {}(slots || []).forEach((s) => {
+        const map = {}
+        ;(slots || []).forEach((s) => {
             map[s.nodeId] = { used: s.used ?? 0, total: s.total ?? 0 }
         })
         return map
-    }, [slotsApi.data])
+    }, [slots, slotsApi?.data])
 
     return (
         <Box sx={{ p: 2 }}>
