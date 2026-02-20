@@ -64,13 +64,13 @@
 
 Flowise 在一个单一的代码库中有 3 个不同的模块。
 
--   `server`：用于提供 API 逻辑的 Node 后端
--   `ui`：React 前端
--   `components`：第三方节点集成
+- `server`：用于提供 API 逻辑的 Node 后端
+- `ui`：React 前端
+- `components`：第三方节点集成
 
 ### 先决条件
 
--   安装 [PNPM](https://pnpm.io/installation)
+- 安装 [PNPM](https://pnpm.io/installation)
     ```bash
     npm i -g pnpm
     ```
@@ -110,7 +110,6 @@ Flowise 在一个单一的代码库中有 3 个不同的模块。
     现在可以在 [http://localhost:3000](http://localhost:3000) 访问应用
 
 6. 用于开发构建：
-
     - 在 `packages/ui` 中创建 `.env` 文件并指定 `VITE_PORT`（参考 `.env.example`）
     - 在 `packages/server` 中创建 `.env` 文件并指定 `PORT`（参考 `.env.example`）
     - 运行
@@ -133,38 +132,37 @@ Flowise 支持不同的环境变量来配置您的实例。您可以在 `package
 
 在您现有的基础设施中部署自托管的 Flowise，我们支持各种[部署](https://docs.flowiseai.com/configuration/deployment)
 
--   [AWS](https://docs.flowiseai.com/deployment/aws)
--   [Azure](https://docs.flowiseai.com/deployment/azure)
--   [Digital Ocean](https://docs.flowiseai.com/deployment/digital-ocean)
--   [GCP](https://docs.flowiseai.com/deployment/gcp)
--   <details>
-      <summary>其他</summary>
+- [AWS](https://docs.flowiseai.com/deployment/aws)
+- [Azure](https://docs.flowiseai.com/deployment/azure)
+- [Digital Ocean](https://docs.flowiseai.com/deployment/digital-ocean)
+- [GCP](https://docs.flowiseai.com/deployment/gcp)
+- <details>
+    <summary>其他</summary>
+    - [Railway](https://docs.flowiseai.com/deployment/railway)
 
-    -   [Railway](https://docs.flowiseai.com/deployment/railway)
+          [![在 Railway 上部署](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
 
-        [![在 Railway 上部署](https://railway.app/button.svg)](https://railway.app/template/pn4G8S?referralCode=WVNPD9)
-
-    -   [Render](https://docs.flowiseai.com/deployment/render)
+    - [Render](https://docs.flowiseai.com/deployment/render)
 
         [![部署到 Render](https://render.com/images/deploy-to-render-button.svg)](https://docs.flowiseai.com/deployment/render)
 
-    -   [HuggingFace Spaces](https://docs.flowiseai.com/deployment/hugging-face)
+    - [HuggingFace Spaces](https://docs.flowiseai.com/deployment/hugging-face)
 
         <a href="https://huggingface.co/spaces/FlowiseAI/Flowise"><img src="https://huggingface.co/datasets/huggingface/badges/raw/main/open-in-hf-spaces-sm.svg" alt="HuggingFace Spaces"></a>
 
-    -   [Elestio](https://elest.io/open-source/flowiseai)
+    - [Elestio](https://elest.io/open-source/flowiseai)
 
         [![Deploy](https://pub-da36157c854648669813f3f76c526c2b.r2.dev/deploy-on-elestio-black.png)](https://elest.io/open-source/flowiseai)
 
-    -   [Sealos](https://template.sealos.io/deploy?templateName=flowise)
+    - [Sealos](https://template.sealos.io/deploy?templateName=flowise)
 
         [![部署到 Sealos](https://sealos.io/Deploy-on-Sealos.svg)](https://template.sealos.io/deploy?templateName=flowise)
 
-    -   [RepoCloud](https://repocloud.io/details/?app_id=29)
+    - [RepoCloud](https://repocloud.io/details/?app_id=29)
 
         [![部署到 RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploy.png)](https://repocloud.io/details/?app_id=29)
 
-      </details>
+        </details>
 
 ## ☁️ 云托管
 
@@ -175,6 +173,12 @@ Flowise 支持不同的环境变量来配置您的实例。您可以在 `package
 在[讨论区](https://github.com/FlowiseAI/Flowise/discussions)中随时提问、提出问题和请求新功能
 
 ## 🙌 贡献
+
+## 本地化注意事项
+
+- 应用默认语言为简体中文，可通过页面顶部语言切换控件在中文和英文间切换。
+- UI 文字已完备翻译，确保切换语言后主要文本仍显示相应语言。
+- 构建/打包时将保持中文 UI。
 
 感谢这些了不起的贡献者
 
