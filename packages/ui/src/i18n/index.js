@@ -80,11 +80,10 @@ const resources = {
             Inactive: 'Inactive',
             'Multi Agents': 'Multi Agents',
             'Sequential Agents': 'Sequential Agents',
-            'Explore and use pre-built templates': 'Explore and use pre-built templates',
+            'Explore and use pre-built templates': 'Explore and use pre-built templates'
             // Additional UI strings that are used in the app but were missing
             // from the Chinese translations. Providing translations helps ensure
             // the UI remains fully localized when the language is switched to Chinese.
-            'Search Name/Description/Node': 'Search Name/Description/Node'
         }
     }
 }
