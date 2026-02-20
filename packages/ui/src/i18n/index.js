@@ -5,12 +5,22 @@ import i18next from 'i18next'
 // persist user preference across reloads.
 export const DEFAULT_LANGUAGE = 'zh'
 
+// Normalize language codes to our internal keys
+const normalizeLanguageCode = (lng) => {
+    if (typeof lng !== 'string') return lng
+    const code = lng.toLowerCase()
+    if (code.startsWith('zh')) return 'zh'
+    if (code.startsWith('en')) return 'en'
+    // keep as-is for any other codes
+    return code
+}
+
 // Resolve initial language from localStorage if available, otherwise fall back
 // to the compiled DEFAULT_LANGUAGE.
 const getInitialLanguage = () => {
     if (typeof window !== 'undefined' && window.localStorage) {
         const saved = window.localStorage.getItem('i18nLng')
-        if (saved) return saved
+        if (saved) return normalizeLanguageCode(saved)
     }
     return DEFAULT_LANGUAGE
 }
@@ -109,10 +119,11 @@ export const SUPPORTED_LANGUAGES = ['zh', 'en']
 export const setLanguage = async (lng) => {
     try {
         if (typeof i18n?.changeLanguage === 'function') {
-            await i18n.changeLanguage(lng)
+            const normalized = normalizeLanguageCode(lng)
+            await i18n.changeLanguage(normalized)
             // Persist the chosen language for future sessions
             if (typeof window !== 'undefined' && window.localStorage) {
-                window.localStorage.setItem('i18nLng', lng)
+                window.localStorage.setItem('i18nLng', normalized)
             }
         }
     } catch (err) {
