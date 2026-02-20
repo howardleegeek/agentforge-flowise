@@ -1,6 +1,6 @@
-# Flowise Docker Hub Image
+# AgentForge Docker Hub Image
 
-Starts Flowise from [DockerHub Image](https://hub.docker.com/r/flowiseai/flowise)
+Starts AgentForge from [DockerHub Image](https://hub.docker.com/r/agentforge/agentforge)
 
 ## Usage
 
@@ -13,12 +13,19 @@ Starts Flowise from [DockerHub Image](https://hub.docker.com/r/flowiseai/flowise
 
 If you like to persist your data (flows, logs, credentials, storage), set these variables in the `.env` file inside `docker` folder:
 
--   DATABASE_PATH=/root/.flowise
--   LOG_PATH=/root/.flowise/logs
--   SECRETKEY_PATH=/root/.flowise
--   BLOB_STORAGE_PATH=/root/.flowise/storage
+- DATABASE_PATH=/root/.agentforge
+- LOG_PATH=/root/.agentforge/logs
+- SECRETKEY_PATH=/root/.agentforge
+- BLOB_STORAGE_PATH=/root/.agentforge/storage
 
-Flowise also support different environment variables to configure your instance. Read [more](https://docs.flowiseai.com/configuration/environment-variables)
+AgentForge also supports different environment variables to configure your instance.
+
+## Dispatch Configuration
+
+For distributed agent execution, configure these environment variables:
+
+- `DISPATCH_ENABLED=true` - Enable dispatch mode
+- `DISPATCH_CONTROLLER_URL=http://controller:8080` - URL of the dispatch controller service
 
 ## Queue Mode:
 

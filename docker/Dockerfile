@@ -1,6 +1,10 @@
 # Stage 1: Build stage
 FROM node:20-alpine AS build
 
+ARG IMAGE_NAME=agentforge
+LABEL org.opencontainers.image.title=$IMAGE_NAME
+LABEL org.opencontainers.image.description="AgentForge Docker image"
+
 USER root
 
 ENV PUPPETEER_SKIP_DOWNLOAD=true
