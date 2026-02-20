@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM node:20-alpine AS build
+FROM --platform=$BUILDPLATFORM node:20-alpine AS build
 
 ARG IMAGE_NAME=agentforge
 LABEL org.opencontainers.image.title=$IMAGE_NAME
@@ -16,7 +16,7 @@ WORKDIR /build
 RUN pnpm install && pnpm build
 
 # Stage 2: Runtime stage
-FROM node:20-alpine
+FROM --platform=$BUILDPLATFORM node:20-alpine
 
 RUN apk add --no-cache chromium git python3 py3-pip make g++ build-base cairo-dev pango-dev curl
 
