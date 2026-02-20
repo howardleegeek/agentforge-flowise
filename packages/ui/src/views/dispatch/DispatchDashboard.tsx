@@ -78,7 +78,8 @@ const DispatchDashboard: React.FC = () => {
                           }
                       })
                     : []
-            } catch {
+            } catch (err) {
+                console.error(`DispatchDashboard [task_id=${TASK_ID}]: failed to fetch nodes`, err)
                 normalized = []
             }
             // Slots (optional: enrich node data if provided)
@@ -101,7 +102,8 @@ const DispatchDashboard: React.FC = () => {
                         slotsTotal: byNode[key]?.total ?? n.slotsTotal
                     }
                 })
-            } catch {
+            } catch (err) {
+                console.error(`DispatchDashboard [task_id=${TASK_ID}]: failed to fetch slots`, err)
                 // ignore if no slots data
             }
             setNodes(normalized)
@@ -118,7 +120,8 @@ const DispatchDashboard: React.FC = () => {
                     running: data?.counts?.running ?? data?.running ?? 0,
                     completed: data?.counts?.completed ?? data?.completed ?? 0
                 }
-            } catch {
+            } catch (err) {
+                console.error(`DispatchDashboard [task_id=${TASK_ID}]: failed to fetch queue`, err)
                 queueCounts = { pending: 0, running: 0, completed: 0 }
             }
             setTasks(queueCounts)
