@@ -1,65 +1,44 @@
-import express, { Request, Response } from 'express'
-import { DispatchBridge } from '../services/dispatch-bridge'
+import { Router, Request, Response } from 'express'
+import dispatchBridge from '../services/dispatch-bridge'
 
-const router = express.Router()
-// Ensure JSON body parsing for these routes
-router.use(express.json())
+const router = Router()
 
-// Submit a workflow to dispatch
+// POST /api/v1/dispatch/submit
 router.post('/submit', async (req: Request, res: Response) => {
-    const { chatflowId, input } = req.body || {}
-    if (!chatflowId) {
-        return res.status(400).json({ error: 'chatflowId is required' })
-    }
-    if (!DispatchBridge.isEnabled()) {
-        return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
-    }
     try {
-        const result = await DispatchBridge.submitTask(chatflowId, input)
-        if (typeof result === 'string') {
-            return res.json({ dispatched: false, reason: 'DISPATCH_DISABLED' })
+        const { flowId, input } = req.body || {}
+        if (!flowId) {
+            return res.status(400).json({ error: 'flowId is required' })
         }
-        res.json({ taskId: result.taskId, dispatched: true })
-    } catch (e: any) {
-        res.status(500).json({ error: String(e) })
+        const result = await dispatchBridge.submitTask(flowId, input)
+        return res.json({ taskId: result.taskId })
+    } catch (err) {
+        console.error('[dispatch] submit error', err)
+        return res.status(500).json({ error: 'dispatch submit failed' })
     }
 })
 
-// Check dispatch task status
+// GET /api/v1/dispatch/status/:taskId
 router.get('/status/:taskId', async (req: Request, res: Response) => {
     const { taskId } = req.params
-    if (!DispatchBridge.isEnabled()) {
-        return res.json({ taskId, skipped: true, reason: 'DISPATCH_DISABLED' })
-    }
     try {
-        const status = await DispatchBridge.getStatus(taskId)
-        res.json({ taskId, status })
-    } catch (e: any) {
-        res.status(500).json({ error: String(e) })
+        const status = await dispatchBridge.getStatus(taskId)
+        return res.json(status)
+    } catch (err) {
+        console.error('[dispatch] status error', err)
+        return res.status(500).json({ error: 'dispatch status failed' })
     }
 })
 
-// List available dispatch nodes
+// GET /api/v1/dispatch/nodes
 router.get('/nodes', async (_req: Request, res: Response) => {
-    if (!DispatchBridge.isEnabled()) {
-        return res.json({ nodes: [], skipped: true, reason: 'DISPATCH_DISABLED' })
-    }
     try {
-        const nodes = await DispatchBridge.getNodes()
-        res.json({ nodes })
-    } catch (e: any) {
-        res.status(500).json({ error: String(e) })
+        const nodes = await dispatchBridge.getNodes()
+        return res.json(nodes)
+    } catch (err) {
+        console.error('[dispatch] nodes error', err)
+        return res.status(500).json({ error: 'dispatch nodes failed' })
     }
-})
-
-// Callback endpoint for task completion from dispatch controller
-router.post('/callback', (req: Request, res: Response) => {
-    const { taskId, status } = req.body || {}
-    if (!taskId) {
-        return res.status(400).json({ error: 'taskId is required' })
-    }
-    DispatchBridge.handleCallback({ taskId, status: status ?? 'unknown' })
-    res.json({ ok: true })
 })
 
 export default router
