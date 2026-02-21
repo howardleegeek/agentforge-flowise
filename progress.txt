@@ -1,0 +1,4 @@
+Progress log for the current run
+- Updated i18n/zh.js: NEW translation now '新建' to align with zh.json
+- Added test: test/i18n.zh.new.translation.test.mjs to verify NEW -> 新建 in zh.js
+- Existing tests untouched; CI/test harness should run and verify after npm install

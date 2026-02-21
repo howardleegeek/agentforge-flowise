@@ -22,7 +22,7 @@ export default {
         'Agentflow generation description': 'Agentflow 生成描述',
         Chinese: '简体中文',
         'Search Name or Category': '按名称或类别搜索',
-        NEW: '新',
+        NEW: '新建',
         Workflow: '工作流',
         'Workflow Builder': '工作流构建器',
         English: '英文',
