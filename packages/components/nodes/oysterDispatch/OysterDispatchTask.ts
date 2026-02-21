@@ -1,86 +1,54 @@
-import { ICommonObject, INode, INodeData, INodeParams } from '../../../src/Interface'
-import { getBaseClasses } from '../../../src/utils'
+// Minimal Oyster Dispatch Task node (TypeScript)
 
-// Oyster Dispatch Task Node
-// Wraps a sub-workflow as a dispatch task
-class OysterDispatchTask implements INode {
-    label: string
-    name: string
-    version: number
-    type: string
-    icon: string
-    category: string
-    description: string
-    baseClasses: string[]
-    inputs: INodeParams[]
-    outputs: any[]
-
-    constructor() {
-        this.label = 'Oyster Dispatch Task'
-        this.name = 'oysterDispatchTask'
-        this.version = 1.0
-        this.type = 'OysterDispatchTask'
-        this.icon = 'oysterDispatchTask.svg'
-        this.category = 'Oyster'
-        this.description = 'Dispatch a sub-workflow as a task'
-        this.baseClasses = getBaseClasses(OysterDispatchTask)
-        this.inputs = [
-            {
-                label: 'Project',
-                name: 'project',
-                type: 'string'
-            },
-            {
-                label: 'Priority',
-                name: 'priority',
-                type: 'string',
-                optional: true
-            },
-            {
-                label: 'Estimated Minutes',
-                name: 'estimatedMinutes',
-                type: 'number',
-                optional: true
-            },
-            {
-                label: 'Node Preference',
-                name: 'nodePreference',
-                type: 'string',
-                optional: true
-            }
-        ]
-        this.outputs = [
-            {
-                label: 'Task ID',
-                name: 'taskId',
-                baseClasses: [...this.baseClasses, 'json']
-            },
-            {
-                label: 'Status',
-                name: 'status',
-                baseClasses: [...this.baseClasses, 'json']
-            },
-            {
-                label: 'Result',
-                name: 'result',
-                baseClasses: [...this.baseClasses, 'json']
-            }
-        ]
-    }
-
-    async init(nodeData: INodeData, _path: string, _options: ICommonObject): Promise<any> {
-        const project = (nodeData.inputs as any)?.project
-        if (!project) {
-            throw new Error('Project is required for OysterDispatchTask')
-        }
-
-        // Minimal, deterministic-ish placeholder for task creation
-        const taskId = `task-${Math.random().toString(36).slice(2, 9)}`
-        const status = 'scheduled'
-        const result = null
-
-        return { taskId, status, result }
-    }
+export interface DispatchTaskInputs {
+    project: string
+    priority: number
+    estimated_minutes: number
+    node_preference?: string
 }
 
-module.exports = { nodeClass: OysterDispatchTask }
+export interface DispatchTaskOutputs {
+    task_id: string
+    status: string
+    result?: any
+}
+
+export class OysterDispatchTask {
+    public inputs: DispatchTaskInputs
+
+    // Lightweight static schemas for tooling visibility
+    static inputSchema = {
+        type: 'object',
+        properties: {
+            project: { type: 'string' },
+            priority: { type: 'number' },
+            estimated_minutes: { type: 'number' },
+            node_preference: { type: 'string' }
+        },
+        required: ['project', 'priority', 'estimated_minutes']
+    }
+    static outputSchema = {
+        type: 'object',
+        properties: {
+            task_id: { type: 'string' },
+            status: { type: 'string' },
+            result: { type: 'any' }
+        }
+    }
+
+    constructor(inputs: DispatchTaskInputs) {
+        this.inputs = inputs
+    }
+
+    async run(): Promise<DispatchTaskOutputs> {
+        // Basic validation to simulate real behavior without performing work
+        const { project, priority, estimated_minutes } = this.inputs
+        if (!project || typeof priority !== 'number' || typeof estimated_minutes !== 'number') {
+            return { task_id: 'invalid', status: 'error', result: 'invalid inputs' }
+        }
+
+        // In a real implementation this would wrap a sub-workflow as a dispatch task
+        const taskId = `dispatch_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+        return { task_id: taskId, status: 'queued', result: null }
+    }
+}
