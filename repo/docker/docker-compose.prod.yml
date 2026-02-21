@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+    agentforge:
+        image: agentforge
+        environment:
+            - DISPATCH_ENABLED=true
+            - DISPATCH_CONTROLLER_URL=${DISPATCH_CONTROLLER_URL:-http://controller:8080}
