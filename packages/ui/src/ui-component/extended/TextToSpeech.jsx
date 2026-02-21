@@ -244,7 +244,7 @@ const TextToSpeech = ({ dialogProps }) => {
         try {
             const providerConfig = textToSpeech?.[selectedProvider] || {}
             const body = {
-                text: 'Today is a wonderful day to build something with Flowise!',
+                text: 'Today is a wonderful day to build something with AgentForge!',
                 provider: selectedProvider,
                 credentialId: providerConfig.credentialId,
                 voice: providerConfig.voice,
@@ -521,7 +521,7 @@ const TextToSpeech = ({ dialogProps }) => {
                                     value={
                                         textToSpeech?.[selectedProvider]
                                             ? textToSpeech[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? false
+                                            : (inputParam.default ?? false)
                                     }
                                 />
                             )}
@@ -532,7 +532,7 @@ const TextToSpeech = ({ dialogProps }) => {
                                     value={
                                         textToSpeech?.[selectedProvider]
                                             ? textToSpeech[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? ''
+                                            : (inputParam.default ?? '')
                                     }
                                 />
                             )}
@@ -544,7 +544,7 @@ const TextToSpeech = ({ dialogProps }) => {
                                     value={
                                         textToSpeech?.[selectedProvider]
                                             ? textToSpeech[selectedProvider][inputParam.name]
-                                            : inputParam.default ?? 'choose an option'
+                                            : (inputParam.default ?? 'choose an option')
                                     }
                                 />
                             )}
@@ -598,7 +598,7 @@ const TextToSpeech = ({ dialogProps }) => {
                         </div>
                         <SwitchInput
                             onChange={(newValue) => setValue(newValue, selectedProvider, 'autoPlay')}
-                            value={textToSpeech?.[selectedProvider] ? textToSpeech[selectedProvider].autoPlay ?? false : false}
+                            value={textToSpeech?.[selectedProvider] ? (textToSpeech[selectedProvider].autoPlay ?? false) : false}
                         />
                     </Box>
 
@@ -610,7 +610,7 @@ const TextToSpeech = ({ dialogProps }) => {
                         </Typography>
 
                         <Typography variant='body2' color='textSecondary' sx={{ mb: 2 }}>
-                            Test text: &quot;Today is a wonderful day to build something with Flowise!&quot;
+                            Test text: &quot;Today is a wonderful day to build something with AgentForge!&quot;
                         </Typography>
 
                         <AudioWaveform

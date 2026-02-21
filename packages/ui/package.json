@@ -1,8 +1,8 @@
 {
-    "name": "flowise-ui",
+    "name": "@oyster/agentforge-ui",
     "version": "3.0.13",
     "license": "SEE LICENSE IN LICENSE.md",
-    "homepage": "https://flowiseai.com",
+    "homepage": "https://agentforge.io",
     "author": {
         "name": "HenryHeng",
         "email": "henryheng@flowiseai.com"
