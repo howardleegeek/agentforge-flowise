@@ -29,6 +29,28 @@ if ! grep -q "DISPATCH_ENABLED" "$ROOT_DIR/.env.example"; then
   echo "FAIL: DISPATCH_ENABLED not documented in .env.example" >&2
   exit 1
 fi
+if ! grep -q "DISPATCH_ENABLED_PROD" "$ROOT_DIR/.env.example"; then
+  echo "FAIL: DISPATCH_ENABLED_PROD not documented in .env.example" >&2
+  exit 1
+fi
+if ! grep -q "DISPATCH_CONTROLLER_URL_PROD" "$ROOT_DIR/.env.example"; then
+  echo "FAIL: DISPATCH_CONTROLLER_URL_PROD not documented in .env.example" >&2
+  exit 1
+fi
+
+# 4) docker-compose.prod.yml must override dispatch config with production env vars
+if [ ! -f "$ROOT_DIR/docker-compose.prod.yml" ]; then
+  echo "FAIL: docker-compose.prod.yml not found" >&2
+  exit 1
+fi
+if ! grep -q "DISPATCH_ENABLED_PROD" "$ROOT_DIR/docker-compose.prod.yml"; then
+  echo "FAIL: docker-compose.prod.yml missing DISPATCH_ENABLED_PROD" >&2
+  exit 1
+fi
+if ! grep -q "DISPATCH_CONTROLLER_URL_PROD" "$ROOT_DIR/docker-compose.prod.yml"; then
+  echo "FAIL: docker-compose.prod.yml missing DISPATCH_CONTROLLER_URL_PROD" >&2
+  exit 1
+fi
 
 echo "ALL TESTS PASSED"
 exit 0
