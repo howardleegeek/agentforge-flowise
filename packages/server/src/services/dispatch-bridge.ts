@@ -1,144 +1,112 @@
-// Lightweight Oyster Dispatch bridge integration for AgentForge server
-// - Optional feature controlled by DISPATCH_ENABLED and DISPATCH_CONTROLLER_URL
-// - Exposes both static API (for routes/tests) and instance API (for internal usage)
+// Lightweight dispatch bridge to forward workflow tasks to an external Dispatch controller
+// This module is intentionally small and dependency-free (uses built-in fetch)
 
-type CallbackPayload = { taskId: string; status?: string }
-
-// Internal simple in-memory store for task statuses (demo-friendly)
-class StatusStore {
-    private map: Map<string, string> = new Map()
-    set(id: string, status: string) {
-        this.map.set(id, status)
-    }
-    get(id: string): string | undefined {
-        return this.map.get(id)
-    }
-}
-
-const globalStatusStore = new StatusStore()
+type CallbackPayload = { taskId?: string; status?: string }
 
 export class DispatchBridge {
-    // Public: check if bridge is enabled via env flag
+    // Runtime check for enabling the bridge
     static isEnabled(): boolean {
+        const val = process.env.DISPATCH_ENABLED ?? 'false'
+        const v = String(val).toLowerCase()
+        return v === 'true' || v === '1' || v === 'enabled'
+    }
+
+    // Simple in-memory task status cache for callbacks
+    private static _taskStatus = new Map<string, string>()
+
+    // Submit a chatflow/workflow to the controller
+    static async submitTask(chatflowId: string, input?: any): Promise<string | null> {
+        if (!DispatchBridge.isEnabled()) return null
+        const controller = process.env.DISPATCH_CONTROLLER_URL
+        if (!controller) return null
         try {
-            const v = process.env.DISPATCH_ENABLED
-            return typeof v === 'string' && v.toLowerCase() === 'true'
-        } catch {
-            return false
-        }
-    }
-
-    // Instance helper (tests expect this)
-    isEnabled(): boolean {
-        return DispatchBridge.isEnabled()
-    }
-
-    // Submit a chatflow as a dispatch task
-    // Returns { taskId } on success, or a string starting with 'dispatch-skip-' when disabled/no-url
-    static async submitTask(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | string> {
-        if (!DispatchBridge.isEnabled()) {
-            return `dispatch-skip-${Date.now()}`
-        }
-        const base = (process.env.DISPATCH_CONTROLLER_URL || '').trim().replace(/\/$/, '')
-        if (!base) {
-            return `dispatch-skip-${Date.now()}`
-        }
-        const url = `${base}/submit`
-        const payload = {
-            chatflowId,
-            input,
-            flowName
-        }
-        const opts: any = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }
-        const res = await fetch(url, opts)
-        if (!res || !res.ok) {
-            throw new Error(`Dispatch controller request failed: ${res?.status ?? 'unknown'}`)
-        }
-        const data = await res.json()
-        const taskId = data?.taskId
-        if (!taskId) {
-            throw new Error('Dispatch controller response missing taskId')
-        }
-        // store initial status
-        globalStatusStore.set(taskId, 'submitted')
-        return { taskId }
-    }
-
-    // Query status from controller
-    // Returns the raw JSON payload from controller, or a local stub if controller not available
-    static async getStatus(taskId: string): Promise<any> {
-        if (!DispatchBridge.isEnabled()) {
-            return { status: 'disabled' }
-        }
-        const base = (process.env.DISPATCH_CONTROLLER_URL || '').trim().replace(/\/$/, '')
-        if (!base) {
-            // Fall back to local status if available
-            const local = globalStatusStore.get(taskId)
-            return { status: local ?? 'unknown' }
-        }
-        const url = `${base}/status/${taskId}`
-        const res = await fetch(url)
-        if (!res || !res.ok) {
-            throw new Error(`Failed to fetch status for ${taskId}`)
-        }
-        const data = await res.json()
-        // Optional: sync local store
-        if (data?.status) globalStatusStore.set(taskId, data.status)
-        return data
-    }
-
-    // Retrieve available nodes from controller
-    static async getNodes(): Promise<any> {
-        if (!DispatchBridge.isEnabled()) return []
-        const base = (process.env.DISPATCH_CONTROLLER_URL || '').trim().replace(/\/$/, '')
-        if (!base) return []
-        const url = `${base}/nodes`
-        const res = await fetch(url)
-        if (!res || !res.ok) {
-            throw new Error(`Failed to fetch nodes`)
-        }
-        const data = await res.json()
-        return data
-    }
-
-    // Callback handler from controller to update status
-    static handleCallback(payload: CallbackPayload) {
-        if (!payload?.taskId) return
-        const status = payload.status ?? 'unknown'
-        globalStatusStore.set(payload.taskId, status)
-        // Lightweight log with context to aid tracing callbacks from controller
-        try {
-            // eslint-disable-next-line no-console
-            console.debug(`DispatchBridge callback: taskId=${payload.taskId} status=${status}`)
-        } catch {
-            // no-op if logging fails
-        }
-    }
-
-    // Instance-level wrappers for tests that instantiate the class
-    constructor() {
-        // no-op
-    }
-
-    async submit(chatflowId: string, input: any, flowName?: string): Promise<{ taskId: string } | null> {
-        const result = await DispatchBridge.submitTask(chatflowId, input, flowName)
-        if (typeof result === 'string') {
-            // disabled or no controller URL
+            const payload: any = { chatflowId, input }
+            const res = await (global as any).fetch(`${controller}/api/v1/dispatch/submit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            if (!res || !res.ok) {
+                // If controller responds with error, treat as no dispatch
+                return null
+            }
+            const data = await res.json()
+            // Expect the controller to return a taskId
+            return data?.taskId ?? null
+        } catch (err) {
+            // Swallow errors in bridge to avoid breaking the API layer
+            console.error('DispatchBridge.submitTask error', err)
             return null
         }
-        return result
     }
 
-    async status(taskId: string): Promise<any> {
-        return DispatchBridge.getStatus(taskId)
+    // Query status for a given task
+    static async getStatus(taskId: string): Promise<any> {
+        // First check in-memory cache
+        if (DispatchBridge._taskStatus.has(taskId)) {
+            return { taskId, status: DispatchBridge._taskStatus.get(taskId) }
+        }
+        if (!DispatchBridge.isEnabled()) {
+            return { skipped: true, reason: 'DISPATCH_DISABLED', taskId }
+        }
+        const controller = process.env.DISPATCH_CONTROLLER_URL
+        if (!controller) {
+            return { skipped: true, reason: 'NO_CONTROLLER_URL', taskId }
+        }
+        try {
+            const res = await (global as any).fetch(`${controller}/api/v1/dispatch/status/${taskId}`, {
+                method: 'GET'
+            })
+            if (!res || !res.ok) {
+                return { error: 'status_error', taskId }
+            }
+            const data = await res.json()
+            // Normalize to return whatever the controller provides
+            // Also store in cache if a status is provided
+            if (data?.status) {
+                DispatchBridge._taskStatus.set(taskId, data.status)
+            }
+            return { taskId, ...data }
+        } catch (err) {
+            console.error('DispatchBridge.getStatus error', err)
+            return { error: (err as Error)?.message ?? 'status_error', taskId }
+        }
     }
 
-    async nodes(): Promise<any> {
-        return DispatchBridge.getNodes()
+    // Retrieve available nodes from the controller
+    static async getNodes(): Promise<any> {
+        if (!DispatchBridge.isEnabled()) {
+            return { skipped: true, reason: 'DISPATCH_DISABLED', nodes: [] }
+        }
+        const controller = process.env.DISPATCH_CONTROLLER_URL
+        if (!controller) {
+            return { skipped: true, reason: 'NO_CONTROLLER_URL', nodes: [] }
+        }
+        try {
+            const res = await (global as any).fetch(`${controller}/api/v1/dispatch/nodes`, {
+                method: 'GET'
+            })
+            if (!res || !res.ok) {
+                return { error: 'nodes_error', nodes: [] }
+            }
+            const data = await res.json()
+            // Expect { nodes: [...] } or similar shape; be permissive
+            return data
+        } catch (err) {
+            console.error('DispatchBridge.getNodes error', err)
+            return { error: (err as Error)?.message ?? 'nodes_error', nodes: [] }
+        }
+    }
+
+    // Callback endpoint: update internal state from the controller
+    static handleCallback(payload: CallbackPayload): void {
+        const { taskId, status } = payload ?? {}
+        if (!taskId) return
+        if (status) {
+            DispatchBridge._taskStatus.set(taskId, status)
+        } else {
+            DispatchBridge._taskStatus.set(taskId, 'updated')
+        }
     }
 }
 
